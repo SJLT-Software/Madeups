@@ -44,9 +44,15 @@ while ($row = mysqli_fetch_assoc($result)) {
 </head>
 
 <body onload="startup()">
+<div id="headerdiv">
+    <div id="reportsdiv">
     <a href="overviewreport.php">Generate Overview</a>
     <a href="overviewreport.php">Generate Detailed Report</a>
-    <a href="logout.php">Logout</a>
+    </div>
+    <div id="logoutbtndiv">
+    <a href="logout.php" id="logoutbtn">Logout</a>
+    </div>
+    </div>
     <div id="btns">
         <button onclick="addinward()">Inward Form</button>
         <button onclick="addoutward()">Outward Form</button>

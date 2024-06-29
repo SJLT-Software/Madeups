@@ -112,7 +112,32 @@
     justify-content: center;
     width: 100%;
   }
+  #headerdiv {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border: 1px solid var(--primary-color);
+    /* border-radius: 5px; */
+  }
+  #logoutbtndiv {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+  }
 
+  #reportsdiv {
+    width: 50%;
+    display: flex;
+  }
+  #headerdiv a {
+    margin: 20px;
+    font-size: 1.0em;
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+  #headerdiv a:hover {
+    color: var(--tertiary-color);
+  }
   #skuviewtablediv {
     display: flex;
     justify-content: center;
