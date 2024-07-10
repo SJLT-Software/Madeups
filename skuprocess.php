@@ -1,4 +1,5 @@
 <?php
+session_start();
 include("connection/dbconnection.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -13,13 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     } else {
         $name = $_POST['Name'];
-        $construction = $_POST['construction'];
+        // $construction = $_POST['construction'];
         $tc = $_POST['tc'];
 
-        $insertQuery = "INSERT INTO main (sku, name, construction, threadcount) VALUES ('$sku', '$name', '$construction', '$tc')";
+        $insertQuery = "INSERT INTO main (sku, name, threadcount) VALUES ('$sku', '$name', '$tc')";
         mysqli_query($con, $insertQuery);
 
-        echo "<script>console.log('SKU added successfully');</script>";
+        $_SESSION['dashboarderror'] = "SKU added successfully!!";
         header("Location: superuser.php");
         exit();
     }

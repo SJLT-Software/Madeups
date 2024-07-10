@@ -14,7 +14,7 @@ include("connection/dbconnection.php");
 require_once 'vendor/autoload.php';
 use Dompdf\Dompdf;
 $dompdf = new Dompdf();
-
+$date = date("d-m-Y");
 $query = "SELECT * from main";
 $rolls = mysqli_query($con, $query);
 $content = "";
@@ -81,7 +81,7 @@ h1{
 </style>
 <div class = "row">
 <div class = "column">
-<div class = "heading">  <h1>Warehouse Overview</h1></div>
+<div class = "heading">  <h1>Warehouse Overview as on '. $date .'</h1></div>
 <div id="tablediv">
 <table>
     <tr><th> SKU </th>
@@ -123,7 +123,7 @@ $content .= '</table>
 $dompdf->loadHtml($content);
 $dompdf->setPaper('A4', 'landscape');
 $dompdf->render();
-$dompdf->stream("madeups_overview.pdf");
+$dompdf->stream("madeups warehouse overview as on ". $date .".pdf");
 
 header("Location: superuser.php");
 exit();

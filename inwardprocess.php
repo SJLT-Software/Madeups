@@ -1,6 +1,6 @@
 <?php
 include("connection/dbconnection.php");
-
+session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lotno = $_POST['lotno'];
     $sku = $_POST['skuinward'];
@@ -24,11 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $date = date('Y-m-d', strtotime($_POST['date']));
         $sku = $_POST['skuinward'];
         $name = $_POST['namevalidationField'];
+        $construction = $_POST['construction'];
+        $width = $_POST['width'];
         for ($i = 1; $i <= $norolls; $i++) {
             $rollnumber = $_POST['rollnumber' . $i];
             $rollmeters = $_POST['rollmeters' . $i];
 
-            $insertQuery = "INSERT INTO datadb (date, sku, name, lotno, norolls, totalmeters, rollno, rollmeters, currentmeters) VALUES ('$date', '$sku', '$name', '$lotno', '$norolls', '$totalmeters', '$rollnumber', '$rollmeters', '$rollmeters')";
+            $insertQuery = "INSERT INTO datadb (date, sku, name, width, lotno, construction, norolls, totalmeters, rollno, rollmeters, currentmeters) VALUES ('$date', '$sku', '$name', '$width', '$lotno', '$construction', '$norolls', '$totalmeters', '$rollnumber', '$rollmeters', '$rollmeters')";
             mysqli_query($con, $insertQuery);
         }
 

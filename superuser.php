@@ -1,3 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="JS_MODS/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="JS_MODS/jquery_library.min.js"></script>
+    <script type="text/javascript" src="JS_MODS/jquery.dataTables.min.js"></script>
+    <title>Dashboard</title>
+</head>
 <?php
 session_start();
 if (!isset($_SESSION['userdets']) || empty($_SESSION['userdets'])) {
@@ -12,10 +24,6 @@ else {
     }
 }
 
-if (isset($_SESSION['dashboarderror'])) {
-    echo "<script>alert('" . htmlspecialchars($_SESSION['dashboarderror'], ENT_QUOTES, 'UTF-8') . "');</script>";
-    unset($_SESSION['dashboarderror']);
-}
 include("connection/dbconnection.php");
 $skus = "SELECT * FROM main";
 $skus_list = mysqli_query($con, $skus);
@@ -30,18 +38,6 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="JS_MODS/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="JS_MODS/jquery_library.min.js"></script>
-    <script type="text/javascript" src="JS_MODS/jquery.dataTables.min.js"></script>
-    <title>Dashboard</title>
-</head>
 
 <body onload="startup()">
     <div id="headerdiv">
@@ -71,8 +67,8 @@ while ($row = mysqli_fetch_assoc($result)) {
             <label for="Name">Name:</label>
             <input id="Name" name="Name" type="text" class="form-field" required>
 
-            <label for="construction">Construction:</label>
-            <input id="construction" name="construction" type="text" class="form-field" required>
+            <!-- <label for="construction">Construction:</label>
+            <input id="construction" name="construction" type="text" class="form-field" required> -->
 
             <label for="tc">Thread Count:</label>
             <input id="tc" name="tc" type="number" class="form-field" required>
@@ -87,7 +83,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                 <thead>
                     <th>SKU</th>
                     <th>Name</th>
-                    <th>Construction</th>
+                    <!-- <th>Construction</th> -->
                     <th>Thread Count</th>
                 </thead>
                 <tbody>
@@ -96,7 +92,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
                         echo "<td>" . $row['SKU'] . "</td>";
                         echo "<td>" . $row['Name'] . "</td>";
-                        echo "<td>" . $row['Construction'] . "</td>";
+                        // echo "<td>" . $row['Construction'] . "</td>";
                         echo "<td>" . $row['ThreadCount'] . "</td>";
                         echo "</tr>";
                     }
@@ -132,8 +128,17 @@ while ($row = mysqli_fetch_assoc($result)) {
             <input type="hidden" id="namevalidationField" name="namevalidationField"
                 pattern="^(?!.*SKU not found).*$" required>
 
-            <label for="lotno">Lot Number:</label>
+                <label for="width">Width:</label>
+                <input id="width" name="width" type="text" class="form-field" required>
+            
+                <label for="lotno">Lot Number:</label>
             <input type="text" name="lotno" placeholder="Lot Number" id="lotno" class="form-field" required>
+
+
+
+            <label for="construction">Construction:</label>
+            <input id="construction" name="construction" type="text" class="form-field" required>
+
 
             <label for="qty">No. of rolls:</label>
             <input type="number" placeholder="No. of rolls" name="qty" id="qty" class="form-field" min=0 max=10
@@ -220,9 +225,12 @@ while ($row = mysqli_fetch_assoc($result)) {
             <input type="text" name="lotnooutward" placeholder="Lot Number" id="lotnooutward" class="form-field"
                 required>
 
-            <select name="rollinfo" id="rollinfo" class="form-field-department" onselect="pickroll()" required>
+            <!-- <select name="rollinfo" id="rollinfo" class="form-field-department" onselect="pickroll()" required>
                 <option value="-" selected disabled>Choose roll</option>
-            </select>
+            </select> -->
+            <div id="rollinfo">
+                <input type="checkbox" name="selectedroll" id="selectedrolldefault" value="0" disabled hidden>
+            </div>
             <div id="pickedrolls">
             </div>
             <input type="hidden" name="rollschoosen" id="rollschoosen" value="0" min="0" step="1" required>
@@ -236,7 +244,6 @@ while ($row = mysqli_fetch_assoc($result)) {
         </form>
         <script>
             $(document).ready(function() {
-
                 $('#skuoutward').on('change', function() {
                     var skuNumber = $(this).val();
 
@@ -255,6 +262,10 @@ while ($row = mysqli_fetch_assoc($result)) {
                         e.preventDefault();
                         alert('Invalid SKU!!');
                     }
+                    else if ($('#rollschoosen').val() == 0){
+                        e.preventDefault();
+                        alert('No rolls selected!!');
+                    }
                 });
 
                 // ------------------------------------
@@ -271,72 +282,46 @@ while ($row = mysqli_fetch_assoc($result)) {
                             var rolls = JSON.parse(data); // Assuming the data is returned in JSON format
                             var $rollInfoSelect = $('#rollinfo');
                             $rollInfoSelect.empty();
-                            $rollInfoSelect.append($('<option>', {
-                                value: '-',
-                                text: 'Choose roll',
-                                disabled: true,
-                                selected: true
-                            }));
+                            
                             $.each(rolls, function(index, roll) {
-                                $rollInfoSelect.append($('<option>', {
+                                $rollInfoSelect.append($('<input>', {
+                                    type: 'checkbox',
                                     value: roll.id,
+                                    id: roll.id,
+                                    name: 'selectedroll',
+                                    checked: false
+                                }));
+                                $rollInfoSelect.append($('<label>', {
+                                    for: roll.id,
                                     text: roll.rollno + ' - ' + roll.currentmeters + ' meters'
                                 }));
+                                $rollInfoSelect.append($('<br>'));
                             });
                         });
                     
                     }
                 });
-            //         var lotNumber = $(this).val();
-            //         var skuNumber = $('#skuoutward').val();
-            //         $.get('fetchRollInfo.php', {
-            //             lotno: lotNumber,
-            //             sku: skuNumber
-            //         }, function(data) {
-            //             var rolls = JSON.parse(data); // Assuming the data is returned in JSON format
-            //             var $rollInfoSelect = $('#rollinfo');
-            //             $rollInfoSelect.empty();
-            //             $rollInfoSelect.append($('<option>', {
-            //                 value: '-',
-            //                 text: 'Choose roll',
-            //                 disabled: true,
-            //                 selected: true
-            //             }));
-            //             // Populate the select with new options
-            //             $.each(rolls, function(index, roll) {
-            //                 $rollInfoSelect.append($('<option>', {
-            //                     value: roll.id,
-            //                     text: roll.rollno + ' - ' + roll.currentmeters + ' meters'
-            //                 }));
-            //             });
-            //         });
-            //     });
-            // });
-            $('#rollinfo').on('change', function() {
-                var roll = $(this).val();
-                var container = $('#pickedrolls');
-                var rollschoosen = $('#rollschoosen').val();
-                var hiddenField = $('<input>').attr({
-                    type: 'hidden',
-                    name: 'selectedroll' + rollschoosen,
-                    value: roll,
-                    id: 'selectedroll' + rollschoosen,
-                    required: true
+                $('#rollinfo').on('click', 'input[name="selectedroll"]', function() {
+                var totalmeters = 0;
+                var rollschoosen = 0;
+                var checkeddiv = $('#pickedrolls');
+                var is_checked = $('input[name="selectedroll"]:checked').length;
+
+                $('input[name="selectedroll"]:checked').each(function() {
+                    var meters = parseFloat($(this).next('label').text().split(' ')[2]) || 0;
+                    totalmeters += meters;
+                    checkeddiv.append($('<input>').attr({
+                        type: 'hidden',
+                        name: 'selectedroll' + rollschoosen,
+                        value: $(this).attr('id'),
+                        required: true
+                    }));
+                    rollschoosen++;
                 });
-                container.append(hiddenField);
-                rollschoosen++;
-                $('#rollschoosen').val(rollschoosen);
-                var selectedRollMeters = parseFloat($(this).find('option:selected').text().split(' - ')[1].split(' ')[0]);
-                console.log(selectedRollMeters);
-                var totalMeters = parseFloat($('#totalmetersout').val());
-                console.log(totalMeters);
-                totalMeters += selectedRollMeters;
-                console.log(totalMeters);
-                $('#totalmetersout').val(totalMeters);
-                $(this).find('option:selected').remove();
-                $('#rollinfo').val($('#rollinfo option:first').val());
+                $('#totalmetersout').val(totalmeters);
+                $('#rollschoosen').val(is_checked);
             });
-            });
+        });
         </script>
     </div>
 
@@ -357,9 +342,11 @@ while ($row = mysqli_fetch_assoc($result)) {
                 pattern="^(?!.*SKU not found).*$" required>
 
             <label for="lotnoreturn">Lot Number:</label>
-            <input type="text" name="lotnoreturn" placeholder="Lot Number" id="lotnoreturn" class="form-field"
-                required>
+            <select name="lotnoreturn" id="lotnoreturn" class="form-field-department" required>
+                <option value="-" selected disabled>Choose Lot</option>
 
+            </select>
+            <label for="rollinforeturn">Roll Number:</label>
             <select name="rollinforeturn" id="rollinforeturn" class="form-field-department" required>
                 <option value="-" selected disabled>Choose roll</option>
             </select>
@@ -367,14 +354,30 @@ while ($row = mysqli_fetch_assoc($result)) {
             </div>
             <input type="hidden" name="rollschoosenreturn" id="rollschoosenreturn" value="0" required>
 
-            <!-- <label for="totalmetersin">Total Meters Selected:</label>
-            <input type="number" name="totalmetersin" placeholder="Total meters" id="totalmetersin" disabled min="0"
-                value="0" class="form-field"> -->
-
+            
             <input type="submit" value="Submit">
-
+            <button type="button" onclick="reset_return()">Clear Form</button>
         </form>
         <script>
+            function reset_return() {
+                document.getElementById("form_return").reset();
+                $('#pickedrollsreturn').empty();
+                $('#rollschoosenreturn').val(0);
+                $('#rollinforeturn').empty();
+                $('#rollinforeturn').append($('<option>', {
+                    value: '-',
+                    text: 'Choose roll',
+                    disabled: true,
+                    selected: true
+                }));
+                $('#lotnoreturn').empty();
+                $('#lotnoreturn').append($('<option>', {
+                    value: '-',
+                    text: 'Choose lot number',
+                    disabled: true,
+                    selected: true
+                }));
+            }
             $(document).ready(function() {
 
                 $('#skureturn').on('change', function() {
@@ -397,7 +400,29 @@ while ($row = mysqli_fetch_assoc($result)) {
                     }
                 });
 
-                // ------------------------------------
+                $('#skureturn').on('change', function() {
+                    var skuNumber = $(this).val();
+                    $.get('fetchLotNumber.php', {
+                        sku: skuNumber,
+                        type: 'out'
+                    }, function(data) {
+                        var lots = JSON.parse(data); 
+                        var $lotNumberSelect = $('#lotnoreturn');
+                        $lotNumberSelect.empty();
+                        $lotNumberSelect.append($('<option>', {
+                            value: '-',
+                            text: 'Choose lot number',
+                            disabled: true,
+                            selected: true
+                        }));
+                        $.each(lots, function(index, lot) {
+                            $lotNumberSelect.append($('<option>', {
+                                value: lot.lotno,
+                                text: lot.lotno + ' - ' + lot.totalmeters
+                            }));
+                        });
+                    });
+                });
 
                 $('#lotnoreturn').on('change', function() {
                     var lotNumber = $(this).val();
@@ -416,7 +441,6 @@ while ($row = mysqli_fetch_assoc($result)) {
                             disabled: true,
                             selected: true
                         }));
-                        // Populate the select with new options
                         $.each(rolls, function(index, roll) {
                             $rollInfoSelect.append($('<option>', {
                                 value: roll.id,
@@ -449,7 +473,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                     class: 'form-field',
                     min: '0',
                     step: '0.0001',
-                    placeholder: 'Roll Meters',
+                    placeholder: 'Meters Consumed',
                     required: true
                 });
 
@@ -576,5 +600,10 @@ while ($row = mysqli_fetch_assoc($result)) {
         document.getElementById("form_return").reset();
     }
 </script>
-
+<?php
+if (isset($_SESSION['dashboarderror'])) {
+    echo "<script>alert('" . htmlspecialchars($_SESSION['dashboarderror'], ENT_QUOTES, 'UTF-8') . "');</script>";
+    unset($_SESSION['dashboarderror']);
+}
+?>
 </html>
