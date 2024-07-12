@@ -60,16 +60,14 @@ while ($row = mysqli_fetch_assoc($result)) {
     <div id="skuform" class="container" hidden>
         <form id="form_sku" action="skuprocess.php" method="post">
             <label for="sku">SKU:</label>
-            <input id="sku" name="sku" type="text" class="form-field" required pattern="^(KJB|H)[0-9]+$"
-                title="SKU must start with 'KJB' or 'H'." onchange="this.reportValidity();"
+            <input id="sku" name="sku" type="text" class="form-field" required pattern="^(KJB|H|SA|B)[0-9]+$"
+                title="SKU must start with 'KJB' or 'H' or 'B' or 'SA'." onchange="this.reportValidity();"
                 oninput="this.value = this.value.toUpperCase()">
 
             <label for="Name">Name:</label>
             <input id="Name" name="Name" type="text" class="form-field" required>
 
-            <!-- <label for="construction">Construction:</label>
-            <input id="construction" name="construction" type="text" class="form-field" required> -->
-
+    
             <label for="tc">Thread Count:</label>
             <input id="tc" name="tc" type="number" class="form-field" required>
 
@@ -116,11 +114,11 @@ while ($row = mysqli_fetch_assoc($result)) {
         <form id="form_inward" action="inwardprocess.php" method="post">
 
             <label for="date">Date:</label>
-            <input type="date" name="date" id="date" class="form-field">
+            <input type="date" name="date" id="date" class="form-field" required>
 
             <label for="skuinward">SKU:</label>
-            <input id="skuinward" name="skuinward" type="text" class="form-field" required pattern="^(KJB|H)[0-9]+$"
-                title="SKU must start with 'KJB' or 'H'." onchange="this.reportValidity();"
+            <input id="skuinward" name="skuinward" type="text" class="form-field" required pattern="^(KJB|H|SA|B)[0-9]+$"
+            title="SKU must start with 'KJB' or 'H' or 'B' or 'SA'." onchange="this.reportValidity();"
                 oninput="this.value = this.value.toUpperCase()" placeholder="SKU">
 
             <label for="nameinward">Name:</label>
@@ -212,8 +210,8 @@ while ($row = mysqli_fetch_assoc($result)) {
             <input type="date" name="dateoutward" id="dateoutward" class="form-field">
 
             <label for="skuoutward">SKU:</label>
-            <input id="skuoutward" name="skuoutward" type="text" class="form-field" required pattern="^(KJB|H)[0-9]+$"
-                title="SKU must start with 'KJB' or 'H'." onchange="this.reportValidity();"
+            <input id="skuoutward" name="skuoutward" type="text" class="form-field" required pattern="^(KJB|H|SA|B)[0-9]+$"
+            title="SKU must start with 'KJB' or 'H' or 'B' or 'SA'." onchange="this.reportValidity();"
                 oninput="this.value = this.value.toUpperCase()" placeholder="SKU">
 
             <label for="nameoutward">Name:</label>
@@ -225,9 +223,6 @@ while ($row = mysqli_fetch_assoc($result)) {
             <input type="text" name="lotnooutward" placeholder="Lot Number" id="lotnooutward" class="form-field"
                 required>
 
-            <!-- <select name="rollinfo" id="rollinfo" class="form-field-department" onselect="pickroll()" required>
-                <option value="-" selected disabled>Choose roll</option>
-            </select> -->
             <div id="rollinfo">
                 <input type="checkbox" name="selectedroll" id="selectedrolldefault" value="0" disabled hidden>
             </div>
@@ -326,14 +321,16 @@ while ($row = mysqli_fetch_assoc($result)) {
     </div>
 
     <div id="returnform" class="container" hidden>
-        <form id="form_return" action="returnprocess.php" method="post">
+        <!-- <input type="text" id="qrtext" class="form-field" placeholder="QR Text"> -->
+        <!-- <button onclick=read_qr_return()>Read QR</button> -->
 
+        <form id="form_return" action="returnprocess.php" method="post">
             <label for="date">Date:</label>
             <input type="date" name="datereturn" id="datereturn" class="form-field">
 
             <label for="skureturn">SKU:</label>
-            <input id="skureturn" name="skureturn" type="text" class="form-field" required pattern="^(KJB|H)[0-9]+$"
-                title="SKU must start with 'KJB' or 'H'." onchange="this.reportValidity();"
+            <input id="skureturn" name="skureturn" type="text" class="form-field" required pattern="^(KJB|H|SA|B)[0-9]+$"
+            title="SKU must start with 'KJB' or 'H' or 'B' or 'SA'." onchange="this.reportValidity();"
                 oninput="this.value = this.value.toUpperCase()" placeholder="SKU">
 
             <label for="namereturn">Name:</label>
@@ -359,6 +356,45 @@ while ($row = mysqli_fetch_assoc($result)) {
             <button type="button" onclick="reset_return()">Clear Form</button>
         </form>
         <script>
+            // function read_qr_return() {
+            //     if($('#qrtext').val() == ''){
+            //         alert('Enter QR Text');
+            //         return;
+            //     }
+            //     var qrtext = $('#qrtext').val();
+            //     var qrtextsplit = qrtext.split('_');
+            //     if(qrtextsplit.length != 5){
+            //         alert('Invalid QR Text');
+            //         return;
+            //     }
+            //     $.get('fetchRollInfo.php', {
+            //         type: 'QR',
+            //         id: qrtextsplit[0]
+            //     }, function(data) {
+            //         if (data === 'Not Found') {
+            //             alert('QR code not found in Database');
+            //             return;
+            //         } else {
+            //             var roll = JSON.parse(data); 
+            //             console.log(roll);
+            //             if(roll.status == 'in'){
+            //                 alert('Roll is not out');
+            //                 return;
+            //             }
+            //             console.log(roll.id, qrtextsplit[0]);
+            //             $('form_return').empty();
+
+            //             $('form_return').append($('<input>').attr({
+            //                 type: 'hidden',
+            //                 name: 'id_returnqr',
+            //                 id: 'id_returnqr',
+            //                 value: roll.id,
+            //                 required: true
+            //             }));
+            //         }
+            //     });
+                
+            // }
             function reset_return() {
                 document.getElementById("form_return").reset();
                 $('#pickedrollsreturn').empty();

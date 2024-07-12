@@ -86,7 +86,6 @@ h1{
 <table>
     <tr><th> SKU </th>
         <th> Name</th>
-        <th> Construction </th>
         <th> TC </th>
         <th> No. of lots</th>
         <th> Total Rolls</th>
@@ -109,7 +108,6 @@ while ($row = mysqli_fetch_array($rolls)) {
     $content.= '<tr>
     <td>' . $row['SKU'] . '</td>
     <td>' . $row['Name'] . '</td>
-    <td>' . $row['Construction'] . '</td>
     <td>' . $row['ThreadCount'] . '</td>
     <td>' . $nolots . '</td>
     <td>' . $norolls . '</td>

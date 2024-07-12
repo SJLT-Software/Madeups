@@ -4,6 +4,13 @@ session_start();
 include("connection/dbconnection.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if(isset($_SESSION['returntype'])) {
+        if($_SESSION['returntype'] === 'QR') {
+            $id = $_POST['id_returnqr'];
+            $query = "UPDATE datadb SET status = 'in', currentmeters = '$meters' WHERE id = '$id'";
+            mysqli_query($con, $query);            
+        }
+    }
     $norolls = $_POST['rollschoosenreturn'];
     for ($i = 0; $i < $norolls; $i++) {
         $id = $_POST['selectedrollreturn' . $i];
