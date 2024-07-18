@@ -51,8 +51,12 @@ include("connection/dbconnection.php");
 session_start();
 require_once 'vendor/autoload.php';
 include("vendor/phpqrcode/qrlib.php");
-
-
+if (!isset($_SESSION['userdets']) || empty($_SESSION['userdets'])) {
+    session_destroy();
+    header("Location: index.php");
+    exit();
+}
+$username = $_SESSION['userdets'][1];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lotno = $_POST['lotno'];
@@ -86,6 +90,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $insertQuery = "INSERT INTO datadb (date, sku, name, width, lotno, construction, norolls, totalmeters, rollno, rollmeters, currentmeters) VALUES ('$date', '$sku', '$name', '$width', '$lotno', '$construction', '$norolls', '$totalmeters', '$rollnumber', '$rollmeters', '$rollmeters')";
             mysqli_query($con, $insertQuery);
             $id = mysqli_insert_id($con);
+            $logquery = "INSERT INTO logdb (date, username, sku, lotno, norolls, rollno, rollid, inward_meters) VALUES ('$date', '$username', '$sku', '$lotno', '$norolls', '$rollnumber', '$id', '$rollmeters')";
+            mysqli_query($con, $logquery);
             
             // ---------------------------------------------------------
 

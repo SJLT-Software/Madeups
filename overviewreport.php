@@ -104,7 +104,7 @@ while ($row = mysqli_fetch_array($rolls)) {
     while ($sum = mysqli_fetch_assoc($totalmeters)) {
         $grandtotalmeters += $sum['totmeters'];
     }
-    $totalmeters = $grandtotalmeters;
+    $totalmeters = round($grandtotalmeters, 2);
     $content.= '<tr>
     <td>' . $row['SKU'] . '</td>
     <td>' . $row['Name'] . '</td>

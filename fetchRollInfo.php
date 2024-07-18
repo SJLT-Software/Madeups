@@ -12,10 +12,8 @@ if(isset($_GET['type'])) {
         $query = "SELECT * FROM datadb WHERE id = '$id'";
         $result = mysqli_query($con, $query);
         $rolls = [];
-        while($row = mysqli_fetch_assoc($result)){
-            $rolls[] = $row;
-        }
-        echo json_encode($rolls);
+        $result = mysqli_fetch_assoc($result);
+        echo json_encode($result);
         exit();
     }
     $sku = $_GET['sku'];

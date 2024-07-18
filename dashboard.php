@@ -18,12 +18,17 @@ if (!isset($_SESSION['userdets']) || empty($_SESSION['userdets'])) {
     exit();
 }
 else {
-    if ($_SESSION['userdets'][1] === "Manav") {
+    if ($_SESSION['userdets'][1] == "Manav") {
         header("Location: superuser.php");
         exit();
     }
 }
-
+if (isset($_SESSION['return_qr'])) {
+    unset($_SESSION['return_qr']);
+}
+if (isset($_SESSION['out_qr'])) {
+    unset($_SESSION['out_qr']);
+}
 include("connection/dbconnection.php");
 $skus = "SELECT * FROM main";
 $skus_list = mysqli_query($con, $skus);
@@ -53,7 +58,6 @@ while ($row = mysqli_fetch_assoc($result)) {
         <button onclick="addoutward()">Outward Form</button>
         <button onclick="addreturn()">Return Form</button>
     </div>
-    
     <div id="skuview" hidden>
         <div id="skutablediv">
             <table id="skutable" border="1">
@@ -93,11 +97,11 @@ while ($row = mysqli_fetch_assoc($result)) {
         <form id="form_inward" action="inwardprocess.php" method="post">
 
             <label for="date">Date:</label>
-            <input type="date" name="date" id="date" class="form-field">
+            <input type="date" name="date" id="date" class="form-field" required>
 
             <label for="skuinward">SKU:</label>
-            <input id="skuinward" name="skuinward" type="text" class="form-field" required pattern="^(KJB|H)[0-9]+$"
-                title="SKU must start with 'KJB' or 'H'." onchange="this.reportValidity();"
+            <input id="skuinward" name="skuinward" type="text" class="form-field" required pattern="^(KJB|H|SA|B)[0-9]+$"
+            title="SKU must start with 'KJB' or 'H' or 'B' or 'SA'." onchange="this.reportValidity();"
                 oninput="this.value = this.value.toUpperCase()" placeholder="SKU">
 
             <label for="nameinward">Name:</label>
@@ -183,14 +187,17 @@ while ($row = mysqli_fetch_assoc($result)) {
     </div>
     <div id="outwardform" class="container" hidden>
         <h1>Outward Form</h1>
-        <form id="form_outward" action="outwardprocess.php" method="post">
+        <input type="text" id="qrtext_outward" class="form-field" placeholder="QR Text">
+        <button onclick=read_qr_outward()>Read QR</button>
 
+        <form id="form_outward" action="outwardprocess.php" method="post">
+            <div id="form_outward_elements">
             <label for="date">Date:</label>
             <input type="date" name="dateoutward" id="dateoutward" class="form-field">
 
             <label for="skuoutward">SKU:</label>
-            <input id="skuoutward" name="skuoutward" type="text" class="form-field" required pattern="^(KJB|H)[0-9]+$"
-                title="SKU must start with 'KJB' or 'H'." onchange="this.reportValidity();"
+            <input id="skuoutward" name="skuoutward" type="text" class="form-field" required pattern="^(KJB|H|SA|B)[0-9]+$"
+            title="SKU must start with 'KJB' or 'H' or 'B' or 'SA'." onchange="this.reportValidity();"
                 oninput="this.value = this.value.toUpperCase()" placeholder="SKU">
 
             <label for="nameoutward">Name:</label>
@@ -202,9 +209,6 @@ while ($row = mysqli_fetch_assoc($result)) {
             <input type="text" name="lotnooutward" placeholder="Lot Number" id="lotnooutward" class="form-field"
                 required>
 
-            <!-- <select name="rollinfo" id="rollinfo" class="form-field-department" onselect="pickroll()" required>
-                <option value="-" selected disabled>Choose roll</option>
-            </select> -->
             <div id="rollinfo">
                 <input type="checkbox" name="selectedroll" id="selectedrolldefault" value="0" disabled hidden>
             </div>
@@ -215,11 +219,106 @@ while ($row = mysqli_fetch_assoc($result)) {
             <label for="totalmetersout">Total Meters Selected:</label>
             <input type="number" name="totalmetersout" placeholder="Total meters" id="totalmetersout" disabled min="0"
                 value="0" class="form-field">
-
+            </div>
             <input type="submit" value="Submit">
 
         </form>
         <script>
+            function read_qr_outward() {
+                if($('#qrtext_outward').val() == ''){
+                    alert('Enter QR Text');
+                    return;
+                }
+                var qrtext = $('#qrtext_outward').val();
+                var qrtextsplit = qrtext.split('_');
+                if(qrtextsplit.length != 5){
+                    alert('Invalid QR Text');
+                    $('#qrtext_outward').val('');
+                    return;
+                }
+                $.get('fetchRollInfo.php', {
+                    type: 'QR',
+                    id: qrtextsplit[0]
+                }, function(data) {
+                    if (data === 'Not Found') {
+                        alert('QR code not found in Database');
+                        $('#qrtext_outward').val('');
+                        return;
+                    } else {
+                        var roll = JSON.parse(data); 
+                        // console.log(roll);
+                        if(roll.sku != qrtextsplit[1] || roll.name != qrtextsplit[2] || roll.lotno != qrtextsplit[3] || roll.rollno != qrtextsplit[4]){
+                            alert('QR code does not match with Roll Information');
+                            $('#qrtext_outward').val('');
+                            return;
+                        }
+                        if(roll.status == 'out'){
+                            alert('Roll is already out');
+                            $('#qrtext_outward').val('');
+                            return;
+                        }
+                        
+                        $('#form_outward_elements').empty();
+                        $('#form_outward_elements').append(
+                            $('<input>').attr({
+                                type: 'hidden',
+                                name: 'outward_qr',
+                                id: 'outward_qr',
+                                value: $('#qrtext_outward').val(),
+                                required: true
+                            }),
+                            $('<label>').attr({
+                                for: 'skuoutward',
+                                class: 'form-label'
+                            }).text('SKU:'),
+                            $('<input>').attr({
+                                type: 'text',
+                                name: 'skuoutward',
+                                id: 'skuoutward',
+                                class: 'form-field',
+                                value: roll.sku,
+                                required: true,
+                                readonly: true,
+                            }),
+                            $('<label>').attr({
+                                for: 'nameoutward',
+                                class: 'form-label'
+                            }).text('Name:'),
+                            $('<input>').attr({
+                                type: 'text',
+                                name: 'nameoutward',
+                                id: 'nameoutward',
+                                class: 'form-field',
+                                value: roll.name,
+                                required: true,
+                                readonly: true,
+                            }),
+                            $('<label>').attr({
+                                for: 'lotnooutward',
+                                class: 'form-label'
+                            }).text('Lot Number:'),
+                            $('<input>').attr({
+                                name: 'lotnooutward',
+                                id: 'lotnooutward',
+                                class: 'form-field',
+                                required: true,
+                                value: roll.lotno,
+                                readonly: true
+                            }),
+                            $('<input>').attr({
+                            type: 'hidden',
+                            name: 'selectedrolloutward',
+                            id: 'selectedrolloutward',
+                            value: roll.id,
+                            required: true
+                            }),
+            
+                        );
+                    }
+                });
+            }
+
+
             $(document).ready(function() {
                 $('#skuoutward').on('change', function() {
                     var skuNumber = $(this).val();
@@ -303,14 +402,17 @@ while ($row = mysqli_fetch_assoc($result)) {
     </div>
 
     <div id="returnform" class="container" hidden>
-        <form id="form_return" action="returnprocess.php" method="post">
+        <input type="text" id="qrtext" class="form-field" placeholder="QR Text">
+        <button onclick=read_qr_return()>Read QR</button>
 
+        <form id="form_return" action="returnprocess.php" method="post">
+            <div id="form_return_elements">
             <label for="date">Date:</label>
             <input type="date" name="datereturn" id="datereturn" class="form-field">
 
             <label for="skureturn">SKU:</label>
-            <input id="skureturn" name="skureturn" type="text" class="form-field" required pattern="^(KJB|H)[0-9]+$"
-                title="SKU must start with 'KJB' or 'H'." onchange="this.reportValidity();"
+            <input id="skureturn" name="skureturn" type="text" class="form-field" required pattern="^(KJB|H|SA|B)[0-9]+$"
+            title="SKU must start with 'KJB' or 'H' or 'B' or 'SA'." onchange="this.reportValidity();"
                 oninput="this.value = this.value.toUpperCase()" placeholder="SKU">
 
             <label for="namereturn">Name:</label>
@@ -331,11 +433,129 @@ while ($row = mysqli_fetch_assoc($result)) {
             </div>
             <input type="hidden" name="rollschoosenreturn" id="rollschoosenreturn" value="0" required>
 
-            
+            </div>
             <input type="submit" value="Submit">
-            <button type="button" onclick="reset_return()">Clear Form</button>
+            <button type="button" onclick="reset_return()" id="return_form_clearbtn">Clear Form</button>
         </form>
         <script>
+            function read_qr_return() {
+                if($('#qrtext').val() == ''){
+                    alert('Enter QR Text');
+                    return;
+                }
+                var qrtext = $('#qrtext').val();
+                var qrtextsplit = qrtext.split('_');
+                if(qrtextsplit.length != 5){
+                    alert('Invalid QR Text');
+                    $('#qrtext').val('');
+                    return;
+                }
+                $.get('fetchRollInfo.php', {
+                    type: 'QR',
+                    id: qrtextsplit[0]
+                }, function(data) {
+                    if (data === 'Not Found') {
+                        alert('QR code not found in Database');
+                        $('#qrtext').val('');
+                        return;
+                    } else {
+                        var roll = JSON.parse(data); 
+                        // console.log(roll);
+                        if(roll.sku != qrtextsplit[1] || roll.name != qrtextsplit[2] || roll.lotno != qrtextsplit[3] || roll.rollno != qrtextsplit[4]){
+                            alert('QR code does not match with Roll');
+                            $('#qrtext').val('');
+                            return;
+                        }
+                        if(roll.status == 'in'){
+                            alert('Roll is not out');
+                            $('#qrtext').val('');
+                            return;
+                        }
+                        
+                        $('#form_return_elements').empty();
+                        $('#return_form_clearbtn').hide();
+                        $('#form_return_elements').append(
+                            $('<input>').attr({
+                                type: 'hidden',
+                                name: 'return_qr',
+                                id: 'return_qr',
+                                value: $('#qrtext').val(),
+                                required: true
+                            }),
+                            $('<label>').attr({
+                                for: 'skureturn',
+                                class: 'form-label'
+                            }).text('SKU:'),
+                            $('<input>').attr({
+                                type: 'text',
+                                name: 'skureturn',
+                                id: 'skureturn',
+                                class: 'form-field',
+                                value: roll.sku,
+                                required: true,
+                                readonly: true,
+                            }),
+                            $('<label>').attr({
+                                for: 'namereturn',
+                                class: 'form-label'
+                            }).text('Name:'),
+                            $('<input>').attr({
+                                type: 'text',
+                                name: 'namereturn',
+                                id: 'namereturn',
+                                class: 'form-field',
+                                value: roll.name,
+                                required: true,
+                                readonly: true,
+                            }),
+                            $('<label>').attr({
+                                for: 'lotnoreturn',
+                                class: 'form-label'
+                            }).text('Lot Number:'),
+                            $('<input>').attr({
+                                name: 'lotnoreturn',
+                                id: 'lotnoreturn',
+                                class: 'form-field',
+                                required: true,
+                                value: roll.lotno,
+                                readonly: true
+                            }),
+                            $('<input>').attr({
+                            type: 'hidden',
+                            name: 'selectedrollreturn',
+                            id: 'selectedrollreturn',
+                            value: roll.id,
+                            required: true
+                            }),
+            
+                        );
+                        $('#form_return_elements').append(
+                            $('<label>').attr({
+                                for: 'rollmetersreturn',
+                                class: 'form-label'
+                            }).text(' Roll No.: ' + roll.rollno)
+                        );
+                        $('#form_return_elements').append(
+                            $('<input>').attr({
+                                id: 'rollmetersreturn',
+                                name: 'rollmetersreturn',
+                                type: 'number',
+                                class: 'form-field',
+                                min: '0',
+                                step: '0.0001',
+                                placeholder: 'Meters Consumed',
+                                required: true
+                            })
+                        );
+                        
+                        // $('form_return').append($('<input>').attr({
+                        //     type: 'submit',
+                        //     value: "Submit",
+                        // }));
+                    }
+                });
+                
+            }
             function reset_return() {
                 document.getElementById("form_return").reset();
                 $('#pickedrollsreturn').empty();
@@ -466,7 +686,6 @@ while ($row = mysqli_fetch_assoc($result)) {
         </script>
     </div>
 
-    
 </body>
 <script>
     function startup() {
@@ -478,7 +697,6 @@ while ($row = mysqli_fetch_assoc($result)) {
     }
 
     
-
     function viewsku() {
         $("#skuview").show();
         $("#inwardform").hide();
