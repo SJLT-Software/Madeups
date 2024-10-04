@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $text = $sku . '_' . $name;
             $bbox = imagettfbbox($fontSize, 0, $fontPath, $text);
             $textWidth = $bbox[2] - $bbox[0];
-            $textX = 10;
+            $textX = 25;
             $textY = $qrY + imagesy($qrImage) + 10; // Adjust Y position based on QR code height and desired padding
             imagettftext($finalImage, $fontSize, 0, $textX, $textY, $fontColor, $fontPath, $text);
     $rightPadding = 10; // Padding from the right edge of the QR code
