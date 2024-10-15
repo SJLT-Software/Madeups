@@ -46,7 +46,7 @@
             
 
 <?php
-error_reporting(0); // Suppress errors and warnings
+error_reporting(E_ERROR); 
 include("connection/dbconnection.php");
 session_start();
 require_once 'vendor/autoload.php';
@@ -57,7 +57,14 @@ if (!isset($_SESSION['userdets']) || empty($_SESSION['userdets'])) {
     exit();
 }
 $username = $_SESSION['userdets'][1];
-
+// function downloadImage($url,$saveto) {
+//     $ch = curl_init($url);
+//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+//     $imageData = curl_exec($ch);
+//     curl_close($ch);
+//     file_put_contents($saveto, $imageData);
+// }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lotno = $_POST['lotno'];
     $sku = $_POST['skuinward'];
@@ -151,9 +158,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             
         }
-            echo '<div id="downloads" hidden">';
+            echo '<div id="downloads"">';
         foreach ($downloadLinks as $link) {
-            echo '<a href="' . htmlspecialchars($link) . '" download id="downloadLink' . htmlspecialchars(basename($link)) . '" hidden>Download ' . basename($link) . '</a><br>';
+            echo '<a href="' . htmlspecialchars($link) . '" download id="downloadLink' . htmlspecialchars(basename($link)) . '" hidden >Download ' . basename($link) . '</a><br>';
+            // $saveto = basename($link);
+            // downloadImage($link, $saveto);
         }
         echo '</div>';
         $_SESSION['dashboarderror'] = "Roll added successfully and qr has been generated!!";
@@ -172,11 +181,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 setTimeout(function() { link.click(); }, i * 1000); // Stagger downloads if necessary
             })(links[i]);
         }
-
-    setTimeout(function() {
+<?php
+    $content = 'setTimeout(function() {
         $("#loading-page").hide();
         window.location.href = "superuser.php";
-    }, 3000);
+    }, '. ($norolls*1010) .');
+    ';
+    echo $content;
+// ?>
+    // window.location.href = "superuser.php";
     });
     </script>
 </body>

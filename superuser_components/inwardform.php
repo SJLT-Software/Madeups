@@ -25,7 +25,7 @@
         <input id="construction" name="construction" type="text" class="form-field" required>
 
         <label for="qty">No. of rolls:</label>
-        <input type="number" placeholder="No. of rolls" name="qty" id="qty" class="form-field" min=0 max=10
+        <input type="number" placeholder="No. of rolls" name="qty" id="qty" class="form-field" min=0 max=100
             placeholder="Enter no. of Rolls" required>
 
         <div id="fieldsContainer"></div>
