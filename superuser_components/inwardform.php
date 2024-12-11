@@ -42,6 +42,7 @@
         $(document).ready(function() {
             $('#qty').change(function() {
                 var qty = $('#qty').val();
+                // Add validation for qty( hard limit for norolls)
                 var container = $('#fieldsContainer');
                 container.empty(); // Clear previous fields
 

@@ -1,0 +1,148 @@
+/* Order Detail form */
+
+#orderdetail_checklistitemsform {
+    width: 85%;  /* Changed from 80% to 85% (remaining space after 15% menu) */
+    margin: 60px 0 0 15% !important; 
+    margin-left: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#orderdetail_checklistitemsform form {
+    background-color: var(--secondary-color);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    max-width: 600px;
+}
+
+#orderdetail_checklistitemsform h1, 
+#orderdetail_checklistitemsform h2 {
+    color: var(--primary-color);
+    margin: 20px 0;
+    text-align: center;
+    width: 100%;
+}
+
+#orderdetail_checklistitemsform table {
+    width: 100%;
+    margin: 20px 0;
+    table-layout: fixed;
+    font-size: 0.9em;
+    border-collapse: collapse;
+}
+
+#orderdetail_checklistitemsform table th,
+#orderdetail_checklistitemsform table td {
+    /* word-wrap: break-word; */
+    padding: 5px;
+}
+
+#orderdetail_checklistitemsform .row {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#orderdetail_checklistitemsform .removeRow {
+    width: auto;
+    padding: 5px 10px;
+}
+
+/* #orderdetail_checklistitemsform button[type="button"] {
+    width: auto;
+    margin: 10px auto;
+    display: block;
+} */
+#orderdetail_checklistitemsform button {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#orderdetail_checklistitemsform button:hover {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+#orderdetail_checklistitemsform div[id$="Rows"] {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#orderdetail_checklistitemsform input[type="text"],
+#orderdetail_checklistitemsform select,
+#orderdetail_checklistitemsform textarea {
+    width: 100%;
+    max-width: 500px;
+}
+
+#orderdetail_checklistitemsform label {
+    width: 100%;
+    text-align: left;
+    margin-top: 5px;
+}
+
+#orderdetail_checklistitemsform div[id^="cutting"],
+#orderdetail_checklistitemsform div[id^="Sewing"],
+#orderdetail_checklistitemsform div[id^="outsourcing"],
+#orderdetail_checklistitemsform div[id^="checking"],
+#orderdetail_checklistitemsform div[id^="ironing_packing"],
+#orderdetail_checklistitemsform div[id^="master_packing"],
+#orderdetail_checklistitemsform div[id^="product_details"] {
+    width: 100%;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#orderdetail_checklistitemsform div[id^=product_details]{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#orderdetail_checklistitemsform .file-input-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+#orderdetail_checklistitemsform .file-input-wrapper .remove-button {
+    align-self: center;
+    width: auto;
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#orderdetail_checklistitemsform .file-input-wrapper .remove-button:hover {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+
+}
+
+
+
+
+/* orderdetail_productdetailsform */

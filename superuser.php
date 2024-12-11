@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="JS_MODS/jquery.dataTables.min.css" />
-        <link rel="stylesheet" href="style2.css" />
+    <link rel="stylesheet" href="style2.css" />
+    <link rel="stylesheet" href="orderdetailstyle.css" />
     <script type="text/javascript" src="JS_MODS/jquery_library.min.js"></script>
     <script type="text/javascript" src="JS_MODS/jquery.dataTables.min.js"></script>
     <title>Dashboard</title>
@@ -73,12 +74,21 @@ else {
     require_once('superuser_components/returnform.php');
     require_once('superuser_components/accview.php');
     require_once('superuser_components/skureportview.php');
+    require_once('superuser_components/orderdetailform_checklistitems.php');
+    require_once('superuser_components/orderdetailform_productdetails.php');
     ?>
     
     </div>
     
 </body>
 <script>
+    $('form').on('submit', function(event) {
+        event.preventDefault();
+        var form = $(this);
+        var action = form.attr('action');
+        form.attr('action', 'form_process/' + action);
+        form.off('submit').submit();
+    });
     function startup() {
         $("#skuform").hide();
         $("#skuview").hide();
@@ -87,97 +97,64 @@ else {
         $("#returnform").hide();
         $("#accview").hide();
         $("#skuReportview").hide();
+        $("#orderdetail_checklistitemsform").hide();
+        $("#orderdetail_productdetailsform").hide();
         resetforms();
     }
 
     function addsku() {
+        startup();
         $("#skuform").show();
-        $("#skuview").hide();
-        $("#inwardform").hide();
-        $("#outwardform").hide();
-        $("#returnform").hide();
-        $("#accview").hide();
-        $("#skuReportview").hide();
-
-        resetforms();
     }
 
     function viewsku() {
-        $("#skuform").hide();
+        startup();
         $("#skuview").show();
-        $("#inwardform").hide();
-        $("#outwardform").hide();
-        $("#returnform").hide();
-        $("#accview").hide();
-        $("#skuReportview").hide();
-
-        resetforms();
     }
 
     function addinward() {
-        $("#skuform").hide();
-        $("#skuview").hide();
+        startup();
         $("#inwardform").show();
-        $("#outwardform").hide();
-        $("#returnform").hide();
-        $("#accview").hide();
-        $("#skuReportview").hide();
-
-        resetforms();
-    }
+        }
 
     function addoutward() {
-        $("#skuform").hide();
-        $("#skuview").hide();
-        $("#inwardform").hide();
+        startup()
         $("#outwardform").show();
-        $("#returnform").hide();
-        $("#accview").hide();
-        $("#skuReportview").hide();
-
-        resetforms();
+        
     }
 
     function addreturn() {
-        $("#skuform").hide();
-        $("#skuview").hide();
-        $("#inwardform").hide();
-        $("#outwardform").hide();
+        startup();
         $("#returnform").show();
-        $("#accview").hide();
-        $("#skuReportview").hide();
-
-        resetforms();
-    }
+        }
 
     function viewacc() {
-        $("#skuform").hide();
-        $("#skuview").hide();
-        $("#inwardform").hide();
-        $("#outwardform").hide();
-        $("#returnform").hide();
+        startup();
         $("#accview").show();
-        $("#skuReportview").hide();
-        resetforms();
-    }
+        }
     function skureportfunc() {
-        $("#skuform").hide();
-        $("#skuview").hide();
-        $("#inwardform").hide();
-        $("#outwardform").hide();
-        $("#returnform").hide();
-        $("#accview").hide();
+        startup();
         $("#skuReportview").show();
-        resetforms();
+        }
+    function orderdetail_checklistitemsfunc() {
+        startup();
+        $("#orderdetail_checklistitemsform").show();
     }
-
+    function orderdetail_productdetailsfunc() {
+        startup();
+        $("#orderdetail_productdetailsform").show();
+    }
     function resetforms() {
         document.getElementById("form_sku").reset();
         document.getElementById("form_inward").reset();
         document.getElementById("form_outward").reset();
         document.getElementById("form_return").reset();
         document.getElementById("form_sku_report").reset();
+        document.getElementById("form_orderdetail_checklistitems").reset();
+        document.getElementById("form_orderdetail_productdetails").reset();
+
     }
+    
     <?php
     ?>
 </script>
@@ -187,8 +164,8 @@ if (isset($_SESSION['dashboarderror'])) {
     unset($_SESSION['dashboarderror']);
 }
 if ($_SESSION['userdets'][1] != "Manav") {
-    echo "<script>document.getElementById('accview').style.display = 'none';</script>";
-    echo "<script>document.getElementById('accviewbtn').style.display = 'none';</script>";
+    echo "<script>document.getElementById('accview').remove();</script>";
+    echo "<script>document.getElementById('accviewbtn').remove();</script>";
 }
 ?>
 </html>

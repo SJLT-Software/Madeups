@@ -18,6 +18,11 @@
                 <button onclick="addinward()">Inward Form</button>
                 <button onclick="addoutward()">Outward Form</button>
                 <button onclick="addreturn()">Return Form</button>
+                <button class="droptab" id="showorderdetails" onclick="show_orderdetails()">Order Details</button>
+                <div id="drop_orderdetails">
+                    <button id="showchecklistitems" onclick="orderdetail_checklistitemsfunc()">Checklist Items</button>
+                    <button id="showproductdetails" onclick="orderdetail_productdetailsfunc()">Product Details</button>
+                </div>
             </div>
             <button id="accviewbtn" onclick="viewacc()">View Accounts</button>
             <button class="droptab" id="showreps" onclick="show_reports()">Reports</button>
@@ -51,8 +56,19 @@
                     }
                 }
 
+                function show_orderdetails() {
+                    if ($('#drop_orderdetails').is(':visible')) {
+                        $('#drop_orderdetails').hide();
+                        $('#showorderdetails').text('▼ Order Details');
+                    } else {
+                        $('#drop_orderdetails').show();
+                        $('#showorderdetails').text('▲ Order Details');
+                    }
+                }
+
                 show_operations();
                 show_reports();
+                show_orderdetails();
             </script>
         </div>
     </div>

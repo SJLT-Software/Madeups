@@ -72,12 +72,26 @@ h1{
     margin-top: 10px;
     margin-bottom: 10px;
 }
+thead {
+    display: table-header-group;
+}
+tr.page-break {
+    page-break-before: always;
+}
+td.mergetd {
+    border-bottom: 0;
+    border-top: 0;
+}
+td.notop {
+    border-bottom: 0;
+}
 
 </style>
 <body>
 <div class = "heading">  <h1>Warehouse Report as on '. $date .'</h1></div>
 <div id="tablediv">
 <table border="1">
+    <thead>
     <tr><th> SKU </th>
         <th> Name</th>
         <th> TC </th>
@@ -91,15 +105,22 @@ h1{
         <th> Return </th>
         <th> Remarks </th>
 
-    </tr>';
+    </tr>
+    </thead>
+    <tbody>';
     $query = "SELECT * from logdb order by sku,lotno,rollno,date desc";
     $logs = mysqli_query($con, $query);
+    $rows_per_page = 25;
     $lot_info = true;
     $lotno_info = "";
+    $count_lots = 0;
     $sku_info = true;
     $skuno_info = "";
+    $count_skus = 0;
     $roll_info = true;
     $rollno_info = "";
+    $count_rolls = 0;
+    
     while ($log = mysqli_fetch_array($logs)) {
         $content .= '<tr>';
         if($skuno_info != $log['sku']) {
@@ -111,11 +132,17 @@ h1{
         $skudata = mysqli_fetch_array($sku_data);
         $query = "SELECT count(*) as count from logdb where sku = '" . $log['sku'] . "'";
         $count_skus = mysqli_fetch_array(mysqli_query($con, $query))['count'];
-        $content .= '<td rowspan=' .$count_skus. '>' . $log['sku'] . '</td>
-        <td rowspan=' .$count_skus. '>' . $skudata['Name'] . '</td>
-        <td rowspan=' .$count_skus. '>' . $skudata['ThreadCount'] . '</td>';
+        $content .= '<td class="notop">' . $log['sku'] . '</td>
+        <td class="notop">' . $skudata['Name'] . '</td>
+        <td class="notop">' . $skudata['ThreadCount'] . '</td>';
         $skuno_info = $log['sku'];
         $sku_info = false;
+        }
+        else {
+            $content .= '<td class="mergetd"></td>
+        <td class="mergetd"></td>
+        <td class="mergetd"></td>';
+            
         }
         if($lotno_info != $log['lotno']) {
             $lot_info = true;
@@ -126,21 +153,30 @@ h1{
         $lotdata = mysqli_fetch_array($lot_data);
         $query = "SELECT count(*) as count from logdb where lotno = '" . $log['lotno'] . "' and sku = '" . $log['sku'] . "'";
         $count_lots = mysqli_fetch_array(mysqli_query($con, $query))['count'];
-        $content .= '<td rowspan=' .$count_lots. '>' . $log['lotno'] . '</td>
-        <td rowspan=' .$count_lots. '>' . $lotdata['width'] . '</td>
-        <td rowspan=' .$count_lots. '>' . $lotdata['construction'] . '</td>';
+        $content .= '<td class="notop">' . $log['lotno'] . '</td>
+        <td class="notop">' . $lotdata['width'] . '</td>
+        <td class="notop">' . $lotdata['construction'] . '</td>';
         $lotno_info = $log['lotno'];
         $lot_info = false;
         }
+        else {
+            $content .= '<td class="mergetd"></td>
+        <td class="mergetd"></td>
+        <td class="mergetd"></td>';
+        }
+
         if($rollno_info != $log['rollno']) {
             $roll_info = true;
         }
         if($roll_info) {
         $query = "SELECT count(*) as count from logdb where rollno = '" . $log['rollno'] . "' and lotno = '" . $log['lotno'] . "' and sku = '" . $log['sku'] . "'";
         $count_rolls = mysqli_fetch_array(mysqli_query($con, $query))['count'];
-        $content .= '<td rowspan=' .$count_rolls. '>' . $log['rollno'] . '</td>';
+        $content .= '<td class="notop">' . $log['rollno'] . '</td>';
         $rollno_info = $log['rollno'];
         $roll_info = false;
+        }
+        else {
+            $content .= '<td class="mergetd"></td>';
         }
         $date_log = DateTime::createFromFormat('Y-m-d', $log['date'])->format('d-m-Y');
         $content .= '
@@ -152,10 +188,42 @@ h1{
     }
     
 
-$content .= '</table>
+$content .= '</tbody></table>
 
 </div>
 </body>
+<script type="text/javascript" src="../JS_MODS/jquery_library.min.js"></script>
+<script type=text/javascript>
+$(document).ready(function() {
+    function mergeCells(selector) {
+        var prevText = "";
+        var rowspan = 1;
+        var prevCell = null;
+
+        $(selector).each(function() {
+            var currentCell = $(this);
+            var currentText = currentCell.text();
+
+            if (prevText === currentText) {
+                rowspan++;
+                currentCell.remove();
+                prevCell.attr("rowspan", rowspan);
+            } else {
+                prevText = currentText;
+                prevCell = currentCell;
+                rowspan = 1;
+            }
+        });
+    }
+
+    mergeCells("td.sku");
+    mergeCells("td.skuname");
+    mergeCells("td.tc");
+    mergeCells("td.lotno");
+    mergeCells("td.rollno");
+ 
+});    
+</script>
 </html>';
 
 

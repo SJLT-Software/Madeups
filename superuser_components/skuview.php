@@ -5,7 +5,6 @@
                 <thead>
                     <th>SKU</th>
                     <th>Name</th>
-                    <!-- <th>Construction</th> -->
                     <th>Thread Count</th>
                 </thead>
                 <tbody>
@@ -14,7 +13,6 @@
                         echo "<tr>";
                         echo "<td>" . $row['SKU'] . "</td>";
                         echo "<td>" . $row['Name'] . "</td>";
-                        // echo "<td>" . $row['Construction'] . "</td>";
                         echo "<td>" . $row['ThreadCount'] . "</td>";
                         echo "</tr>";
                     }
