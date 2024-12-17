@@ -12,7 +12,7 @@
 <body>
   <div class="container">
     <h1>Madeups Warehousing Software</h1>
-    <form action="registerprocess.php" method="POST">
+    <form action="form_process/registerprocess.php" method="POST">
     <label for="name">Name:</label>
       <input type="text" id="name" name="name" class="form-field" required>
       <label for="username">Username:</label>
