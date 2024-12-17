@@ -1,6 +1,5 @@
 <?php
 
-use FontLib\Table\Type\head;
 
 session_start();
 error_reporting(0); // Suppress errors and warnings
@@ -15,7 +14,6 @@ $username = $_SESSION['userdets'][1];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sales_order_no = $_POST['sales_order_no'];
-    echo $sales_order_no;
     $buyer_code = $_POST['buyer_code'];
     $work_order_number = $_POST['work_order_number'];
     $tech_pack = $_FILES['tech_pack'];
