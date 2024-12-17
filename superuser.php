@@ -23,8 +23,6 @@ if (!isset($_SESSION['userdets']) || empty($_SESSION['userdets'])) {
     exit();
 }
 
-    
-
 if (isset($_SESSION['return_qr'])) {
     unset($_SESSION['return_qr']);
 }
