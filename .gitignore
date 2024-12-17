@@ -1,2 +1,4 @@
-tempdump/
-uploads/orderchecklistitems_techpacks/
+tempdump/*
+uploads/orderchecklistitems_techpacks/*
+!uploads/orderchecklistitems_techpacks/.gitkeep
+!tempdump/.gitkeep
