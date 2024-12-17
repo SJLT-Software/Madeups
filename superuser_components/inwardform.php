@@ -6,9 +6,7 @@
         <input type="date" name="date" id="date" class="form-field" required>
 
         <label for="skuinward">SKU:</label>
-        <input id="skuinward" name="skuinward" type="text" class="form-field" required pattern="^(KJB|H|SA|B)[0-9]+$"
-            title="SKU must start with 'KJB' or 'H' or 'B' or 'SA'." onchange="this.reportValidity();"
-            oninput="this.value = this.value.toUpperCase()" placeholder="SKU">
+        <input id="skuinward" name="skuinward" type="text" class="form-field skuField">
 
         <label for="nameinward">Name:</label>
         <input type="text" name="nameinward" id="nameinward" class="form-field" placeholder="Name" disabled>

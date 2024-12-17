@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="JS_MODS/jquery.dataTables.min.css" />
-    <link rel="stylesheet" href="style2.css" />
-    <link rel="stylesheet" href="orderdetailstyle.css" />
+    <link rel="stylesheet" href="css/style2.css" />
+    <link rel="stylesheet" href="css/orderdetailstyle.css" />
     <script type="text/javascript" src="JS_MODS/jquery_library.min.js"></script>
     <script type="text/javascript" src="JS_MODS/jquery.dataTables.min.js"></script>
     <title>Dashboard</title>
@@ -84,11 +84,42 @@ else {
 <script>
     $('form').on('submit', function(event) {
         event.preventDefault();
+        if ($(this).find('.salesorderno').length) {
+            var salesOrderNo = $('.salesorderno').val().trim();
+            if (salesOrderNo.startsWith('S')) {
+            salesOrderNo = salesOrderNo.substring(1).trim();
+            }
+            $('.salesorderno').val(parseInt(salesOrderNo, 10));
+        }
         var form = $(this);
         var action = form.attr('action');
         form.attr('action', 'form_process/' + action);
         form.off('submit').submit();
     });
+    $(document).ready(function() {
+            $('.skuField').attr({
+                'title': "SKU must start with 'KJB' or 'H' or 'B' or 'SA'.",
+                'pattern': "^(KJB|H|SA|B)[0-9]+$",
+                'onchange': "this.reportValidity();",
+                'oninput': "this.value = this.value.toUpperCase()",
+                'type': "text",
+                'required': "required",
+                'placeholder': "SKU"
+
+            });
+            $('.salesorderno').attr({
+                'title': "Sales Order No. must start with 'S'.",
+                'pattern': "^(S)[1-9][0-9]*$",
+                'onchange': "this.reportValidity();",
+                'oninput': "this.value = this.value.toUpperCase()",
+                'type': "text",
+                'required': "required",
+                'placeholder': "Sales Order No."
+                });
+
+            
+    });
+    
     function startup() {
         $("#skuform").hide();
         $("#skuview").hide();

@@ -1,11 +1,11 @@
 <div id="orderdetail_checklistitemsform" hidden>
     <h1>Order Detail Form</h1>
-    <form id="form_orderdetail_checklistitems" action="orderdetailform_checklistitemsprocess.php" method="post">
+    <form id="form_orderdetail_checklistitems" action="orderdetailform_checklistitemsprocess.php" method="post" enctype="multipart/form-data">
 
         <!-- <label for="date">Date:</label>
         <input type="date" name="date" id="date" class="form-field" required> -->
         <label for="sales_order_no">Sales Order No.:</label>
-        <input type="text" name="sales_order_no" id="sales_order_no" class="form-field" required>
+        <input type="text" name="sales_order_no" id="sales_order_no" class="form-field salesorderno" required>
 
         <label for="buyer_code">Buyer Code:</label>
         <input type="text" name="buyer_code" id="buyer_code" class="form-field" required>
@@ -103,6 +103,7 @@
         
     <script>
         $(document).ready(function() {
+            
             $('#remove_tech_pack').hide();
             $('#tech_pack').on('change', function() {
                 if ($('#tech_pack').val() !== '') {
@@ -157,7 +158,7 @@
             addRow("addRowButtonMasterPacking", "masterPackingRows");
 
             // Remove row functionality
-            $(document).on('click', '.removeRow', function() {
+            $('#orderdetail_checklistitemsform').on('click', '.removeRow', function() {
                 $(this).parent().remove();
             });
 

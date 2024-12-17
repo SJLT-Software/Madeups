@@ -1,6 +1,7 @@
 <?php
 session_start();
-include("connection/dbconnection.php");
+error_reporting(0); // Suppress errors and warnings
+include("../connection/dbconnection.php");
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $userid = $_POST['username'];
 	$stmt = "SELECT * FROM creds WHERE userid = '$userid'";
@@ -14,7 +15,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         else {
             $_SESSION['message'] = "Invalid Credentials!!";
-            header("Location: index.php");
+            header("Location: ../index.php");
             exit();
         }
 } 

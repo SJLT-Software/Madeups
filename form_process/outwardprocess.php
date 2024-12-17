@@ -3,7 +3,7 @@ error_reporting(0); // Suppress errors and warnings
 
 session_start();
 
-include("connection/dbconnection.php");
+include("../connection/dbconnection.php");
 
 if (!isset($_SESSION['userdets']) || empty($_SESSION['userdets'])) {
     session_destroy();

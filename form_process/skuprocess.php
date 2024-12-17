@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("connection/dbconnection.php");
+include("../connection/dbconnection.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sku = $_POST['sku'];

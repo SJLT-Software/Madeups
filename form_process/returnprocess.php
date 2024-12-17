@@ -2,7 +2,7 @@
 session_start();
 error_reporting(0); // Suppress errors and warnings
 
-include("connection/dbconnection.php");
+include("../connection/dbconnection.php");
 if (!isset($_SESSION['userdets']) || empty($_SESSION['userdets'])) {
     session_destroy();
     header("Location: index.php");

@@ -13,7 +13,7 @@ session_start();
 <body>
   <div class="container">
     <h1>Madeups Warehousing Software</h1>
-    <form action = 'loginprocess.php' method="post" >
+    <form action = 'form_process/loginprocess.php' method="post" >
       <label for="username">Username:</label>
       <input type="text" id="username" name="username" class="form-field" required>
 	  <label for="password">Password:</label>

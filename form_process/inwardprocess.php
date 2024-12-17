@@ -47,7 +47,7 @@
 
 <?php
 error_reporting(E_ERROR); 
-include("connection/dbconnection.php");
+include("../connection/dbconnection.php");
 session_start();
 require_once 'vendor/autoload.php';
 include("vendor/phpqrcode/qrlib.php");

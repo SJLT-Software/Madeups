@@ -1,7 +1,7 @@
 <div id="orderdetail_productdetailsform" hidden>
 <form id="form_orderdetail_productdetails" action="orderdetailform_productdetailsprocess.php" method="post">
 <label for="sales_order_no">Sales Order No.:</label>
-        <input type="text" name="sales_order_no" id="sales_order_no" class="form-field" required>
+        <input type="text" name="sales_order_no" id="sales_order_no" class="form-field salesorderno" required>
 
 <h2> Product Details </h2>
         <div id="product_details">
@@ -60,11 +60,25 @@
                 newRow.append("<td><input type='text' class='form-field' required></td>");
                 newRow.append("<td><input type='text' class='form-field' required></td>");
                 newRow.append("<td><input type='text' class='form-field' required></td>");
-                newRow.append("<td><input type='text' class='form-field' required></td>");
+                // newRow.append("<td><input type='text' class='form-field' required></td>");
                 newRow.append("<td><button type='button' class='lockRow'>Lock</button></td>");
-                newRow.append("<button type='button' class='removeRow'>Remove</button>");
+                newRow.append("<td><button type='button' class='removeRow'>Remove</button></td>");
                 $('#product_details_table tbody').append(newRow);
             });
+            $('#orderdetail_productdetailsform').on('click', '.removeRow', function() {
+                $(this).parent().parent().remove();
+            });
+            $('#orderdetail_productdetailsform').on('click', '.lockRow', function() {
+                $(this).parent().siblings().find('input').attr('readonly', true);
+                $(this).parent().siblings().find('.removeRow').attr('disabled', true);
+                $(this).text('Unlock').removeClass('lockRow').addClass('unlockRow');
+            });
+            $('#orderdetail_productdetailsform').on('click', '.unlockRow', function() {
+                $(this).parent().siblings().find('input').attr('readonly', false);
+                $(this).parent().siblings().find('.removeRow').attr('disabled', false);
+                $(this).text('Lock').removeClass('unlockRow').addClass('lockRow');
+            });
+            
         });
 
 </script>
