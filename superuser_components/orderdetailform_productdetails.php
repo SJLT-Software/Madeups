@@ -26,8 +26,8 @@
                     <th>Label</th>
                     <th>Elastic</th>
                     <th>Label Placement</th>
-                    <th></th>
-                    <th></th>
+                    <th class="buttonTc" colspan=2><button type='button' class='lockTable'> Lock Table</button></th>
+                    <!-- <th class="buttonTc"></th> -->
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +46,7 @@
                 newRow.append("<td><input type='text' class='form-field' required></td>");
                 newRow.append("<td><input type='text' class='form-field' required></td>");
                 newRow.append("<td><input type='text' class='form-field' required></td>");
-                newRow.append("<td><input type='text' class='form-field' required></td>");
+                newRow.append("<td><input type='number' class='form-field' required></td>");
                 newRow.append("<td><input type='text' class='form-field' required></td>");
                 newRow.append("<td><input type='text' class='form-field' required></td>");
                 newRow.append("<td><input type='text' class='form-field' required></td>");
@@ -61,8 +61,8 @@
                 newRow.append("<td><input type='text' class='form-field' required></td>");
                 newRow.append("<td><input type='text' class='form-field' required></td>");
                 // newRow.append("<td><input type='text' class='form-field' required></td>");
-                newRow.append("<td><button type='button' class='lockRow'>Lock</button></td>");
-                newRow.append("<td><button type='button' class='removeRow'>Remove</button></td>");
+                newRow.append("<td class='buttonTc'><button type='button' class='lockRow'>Lock</button></td>");
+                newRow.append("<td class='buttonTc'><button type='button' class='removeRow'>Remove</button></td>");
                 $('#product_details_table tbody').append(newRow);
             });
             $('#orderdetail_productdetailsform').on('click', '.removeRow', function() {
@@ -77,6 +77,21 @@
                 $(this).parent().siblings().find('input').attr('readonly', false);
                 $(this).parent().siblings().find('.removeRow').attr('disabled', false);
                 $(this).text('Lock').removeClass('unlockRow').addClass('lockRow');
+                if ($('#product_details_table .unlockRow').length === 0) {
+                    $('.unlockTable').text('Lock Table').removeClass('unlockTable').addClass('lockTable');
+                }
+            });
+            $('#orderdetail_productdetailsform').on('click', '.lockTable', function() {
+                $('#product_details_table input').attr('readonly', true);
+                $('#product_details_table .removeRow').attr('disabled', true);
+                $('#product_details_table .lockRow').text('Unlock').removeClass('lockRow').addClass('unlockRow');
+                $(this).text('Unlock Table').removeClass('lockTable').addClass('unlockTable');
+            });
+            $('#orderdetail_productdetailsform').on('click', '.unlockTable', function() {
+                $('#product_details_table input').attr('readonly', false);
+                $('#product_details_table .removeRow').attr('disabled', false);
+                $('#product_details_table .unlockRow').text('Lock').removeClass('unlockRow').addClass('lockRow');
+                $(this).text('Lock Table').removeClass('unlockTable').addClass('lockTable');
             });
             
         });

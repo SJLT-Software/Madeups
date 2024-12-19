@@ -4,8 +4,10 @@ error_reporting(0); // Suppress errors and warnings
 include("../connection/dbconnection.php");
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $userid = $_POST['username'];
-	$stmt = "SELECT * FROM creds WHERE userid = '$userid'";
-    $result = mysqli_query($con, $stmt);
+    $stmt = $con->prepare("SELECT * FROM creds WHERE userid = ?");
+    $stmt->bind_param("s", $userid);
+    $stmt->execute();
+    $result = $stmt->get_result();
 	if (mysqli_num_rows($result) === 1) {
         $result = mysqli_fetch_assoc($result);
         if($result['password'] === $_POST['password']) {

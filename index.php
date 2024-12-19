@@ -9,6 +9,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="JS_MODS/jquery_library.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -23,6 +24,11 @@ session_start();
 	</form>
     <a href="register.php" class="register-link">Don't have an account? Register Here</a>
   </div>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#username').focus();
+    });
+  </script>
   <?php
 if (isset($_SESSION['message'])) {
   echo '<script>document.getElementById("message").innerHTML = "'.htmlspecialchars($_SESSION['message'], ENT_QUOTES, 'UTF-8').'";</script>';

@@ -12,7 +12,6 @@
     <title>Dashboard</title>
 </head>
 <?php
-
 session_start();
 error_reporting(0); // Suppress errors and warnings
 include("connection/dbconnection.php");

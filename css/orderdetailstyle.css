@@ -274,3 +274,8 @@
 
 }
 
+#orderdetail_productdetailsform .buttonTc {
+    background-color: var(--secondary-color);
+    border: none;
+    
+}
