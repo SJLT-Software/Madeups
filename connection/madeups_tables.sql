@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 17, 2024 at 05:13 PM
+-- Generation Time: Jan 08, 2025 at 05:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -11,14 +11,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
---- Privileges for `softwareroot`@`%`
 
-GRANT SELECT, INSERT, UPDATE, CREATE, RELOAD, PROCESS, FILE, REFERENCES, INDEX, ALTER, SHOW DATABASES, SUPER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, REPLICATION SLAVE, REPLICATION CLIENT, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON *.* TO `softwareroot`@`%` WITH GRANT OPTION;
-
-
---- Privileges for `softwareroot`@`localhost`
-
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, RELOAD, PROCESS, FILE, REFERENCES, INDEX, ALTER, SHOW DATABASES, SUPER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, REPLICATION SLAVE, REPLICATION CLIENT, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON *.* TO `softwareroot`@`localhost` WITH GRANT OPTION;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -36,6 +29,7 @@ USE `madeups`;
 -- Table structure for table `creds`
 --
 
+DROP TABLE IF EXISTS `creds`;
 CREATE TABLE IF NOT EXISTS `creds` (
   `name` varchar(200) NOT NULL,
   `userid` varchar(200) NOT NULL,
@@ -49,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `creds` (
 -- Table structure for table `datadb`
 --
 
+DROP TABLE IF EXISTS `datadb`;
 CREATE TABLE IF NOT EXISTS `datadb` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
@@ -73,6 +68,7 @@ CREATE TABLE IF NOT EXISTS `datadb` (
 -- Table structure for table `logdb`
 --
 
+DROP TABLE IF EXISTS `logdb`;
 CREATE TABLE IF NOT EXISTS `logdb` (
   `currentdate` timestamp NOT NULL DEFAULT current_timestamp(),
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -96,10 +92,31 @@ CREATE TABLE IF NOT EXISTS `logdb` (
 -- Table structure for table `main`
 --
 
+DROP TABLE IF EXISTS `main`;
 CREATE TABLE IF NOT EXISTS `main` (
   `SKU` varchar(20) NOT NULL,
   `Name` varchar(500) NOT NULL,
   `ThreadCount` int(11) NOT NULL,
+  `FabricContent` varchar(1000) NOT NULL,
+  `WeaveDesign` varchar(1000) NOT NULL,
+  `Finished_WarpCount` varchar(100) NOT NULL,
+  `Finished_WarpComposition` varchar(100) NOT NULL,
+  `Finished_WeftCount` varchar(100) NOT NULL,
+  `Finished_WeftComposition` varchar(100) NOT NULL,
+  `Finished_EPI` varchar(100) NOT NULL,
+  `Finished_PPI` varchar(100) NOT NULL,
+  `Finished_Ply` varchar(100) NOT NULL,
+  `Greige_WarpCount` varchar(100) NOT NULL,
+  `Greige_WarpComposition` varchar(100) NOT NULL,
+  `Greige_WeftCount` varchar(100) NOT NULL,
+  `Greige_WeftComposition` varchar(100) NOT NULL,
+  `Greige_EPI` varchar(100) NOT NULL,
+  `Greige_PPI` varchar(100) NOT NULL,
+  `Greige_Ply` varchar(100) NOT NULL,
+  `GSM` varchar(100) NOT NULL,
+  `Color` varchar(100) NOT NULL,
+  `Finished_Width` varchar(50) NOT NULL,
+  `Greige_Width` varchar(50) NOT NULL,
   PRIMARY KEY (`SKU`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -109,6 +126,7 @@ CREATE TABLE IF NOT EXISTS `main` (
 -- Table structure for table `orderchecklistitems`
 --
 
+DROP TABLE IF EXISTS `orderchecklistitems`;
 CREATE TABLE IF NOT EXISTS `orderchecklistitems` (
   `user` varchar(250) NOT NULL,
   `date` datetime NOT NULL DEFAULT current_timestamp(),
@@ -139,6 +157,7 @@ CREATE TABLE IF NOT EXISTS `orderchecklistitems` (
 -- Table structure for table `orderproductdetails`
 --
 
+DROP TABLE IF EXISTS `orderproductdetails`;
 CREATE TABLE IF NOT EXISTS `orderproductdetails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` datetime NOT NULL DEFAULT current_timestamp(),
