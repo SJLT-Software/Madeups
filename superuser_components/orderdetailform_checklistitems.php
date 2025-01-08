@@ -6,7 +6,9 @@
         <input type="date" name="date" id="date" class="form-field" required> -->
         <label for="sales_order_no">Sales Order No.:</label>
         <input type="text" name="sales_order_no" id="sales_order_no" class="form-field salesorderno" required>
-
+    <div id="sales_order_no_exists" class="salesorderexists" title="Sales Order Exists" hidden>
+        <p>The Sales Order Number you entered already exists. Please enter a different Sales Order Number.</p>
+    </div>
         <label for="buyer_code">Buyer Code:</label>
         <input type="text" name="buyer_code" id="buyer_code" class="form-field" required>
 
@@ -117,7 +119,7 @@
                 $(this).hide();
             });
             
-            
+            // Section-specific options
             const sections = {
                 cuttingRows: ['Option-1', 'Option-2', 'Option-3'],
                 sewingRows: ['Option-1', 'Option-2', 'Option-3'],

@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="JS_MODS/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="JS_MODS/jquery-ui/jquery-ui.min.css" />
     <link rel="stylesheet" href="css/style2.css" />
     <link rel="stylesheet" href="css/orderdetailstyle.css" />
     <script type="text/javascript" src="JS_MODS/jquery_library.min.js"></script>
     <script type="text/javascript" src="JS_MODS/jquery.dataTables.min.js"></script>
+    <!-- <script type="text/javascript" src="JS_MODS/jquery-ui/external/jquery/jquery.js"></script> -->
+    <script type="text/javascript" src="JS_MODS/jquery-ui/jquery-ui.min.js"></script>
+
     <title>Dashboard</title>
 </head>
 <?php
@@ -21,7 +24,6 @@ if (!isset($_SESSION['userdets']) || empty($_SESSION['userdets'])) {
     header("Location: index.php");
     exit();
 }
-
 if (isset($_SESSION['return_qr'])) {
     unset($_SESSION['return_qr']);
 }
@@ -39,12 +41,10 @@ $acc_list = mysqli_query($con, $acc);
 $query = "SELECT * FROM datadb";
 $result = mysqli_query($con, $query);
 $rolls = [];
-
 while ($row = mysqli_fetch_assoc($result)) {
     $rolls[] = $row;
 }
 ?>
-
 <?php
 if(isset($_SESSION['skureport'])) {
     echo '<body onload="skureportfunc()">';
@@ -53,17 +53,14 @@ else {
     echo '<body onload="startup()">';
 }
 ?>
-<!-- <body onload="startup()"> -->
-    <?php
+<?php
     // echo '<script>';
     // echo 'console.log(' . json_encode($_SESSION) . ');';
     // echo '</script>';
     require('superuser_components/backgroundmenu.php');
-    ?>
-
-
+?>
     <div id="maindiv">
-    <?php
+<?php
     require_once('superuser_components/skuform.php');
     require_once('superuser_components/skuview.php');
     require_once('superuser_components/inwardform.php');
@@ -73,9 +70,9 @@ else {
     require_once('superuser_components/skureportview.php');
     require_once('superuser_components/orderdetailform_checklistitems.php');
     require_once('superuser_components/orderdetailform_productdetails.php');
-    ?>
+?>
     
-    </div>
+</div>
     
 </body>
 <script>
@@ -104,6 +101,18 @@ else {
                 'placeholder': "SKU"
 
             });
+            $('.salesorderexists').dialog({
+                autoOpen: false,
+                modal: true,
+                buttons: {
+                    Ok: function() {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+            $('.salesorderexists').attr({
+                'hidden': false
+            });
             $('.salesorderno').attr({
                 'title': "Sales Order No. must start with 'S'.",
                 'pattern': "^(S)[1-9][0-9]*$",
@@ -112,11 +121,38 @@ else {
                 'type': "text",
                 'required': "required",
                 'placeholder': "Sales Order No."
+                }).on('change', function() {
+                    // Check if sales order no exists and update hidden field
+                    //Hidden field updates primary field:
+                    // Product details: Give a tick mark to show sales order no exists
+                    // Checklist items: Give an error to say sales order no already exists
+                    if (this.reportValidity()) {
+                        var salesorderno = $(this).val();
+                        // console.log(salesorderno);
+                        salesorderno = salesorderno.substring(1).trim();
+                        salesorderno = parseInt(salesorderno, 10)
+                        // console.log(salesorderno);
+                        $.get('fetchsalesorderno.php', {
+                            salesorderno: salesorderno
+                        }, function(data) {
+                            // $('.salesorderexists').val(data.exists);
+                            // console.log(data);
+                            // console.log(data.exists);
+                            if (data.exists) {
+                                $('#sales_order_no_exists').dialog('option', 'title', 'Error').dialog('option','content','Sales Order No. already exists.').dialog('open');
+                                $('#form_orderdetail_checklistitems input[type="submit"]').prop('disabled', true);
+                            } else {
+                                $('#sales_order_no_exists').dialog('close');
+                                $('#form_orderdetail_checklistitems input[type="submit"]').prop('disabled', false);
+                            }
+                            // Any other data to be filled
+                        });
+                    }
+                    
                 });
 
             
     });
-    
     function startup() {
         $("#skuform").hide();
         $("#skuview").hide();
@@ -129,17 +165,14 @@ else {
         $("#orderdetail_productdetailsform").hide();
         resetforms();
     }
-
     function addsku() {
         startup();
         $("#skuform").show();
     }
-
     function viewsku() {
         startup();
         $("#skuview").show();
     }
-
     function addinward() {
         startup();
         $("#inwardform").show();
@@ -150,7 +183,6 @@ else {
         $("#outwardform").show();
         
     }
-
     function addreturn() {
         startup();
         $("#returnform").show();
@@ -181,10 +213,7 @@ else {
         document.getElementById("form_orderdetail_checklistitems").reset();
         document.getElementById("form_orderdetail_productdetails").reset();
 
-    }
-    
-    <?php
-    ?>
+    } 
 </script>
 <?php
 if (isset($_SESSION['dashboarderror'])) {

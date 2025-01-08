@@ -1,8 +1,8 @@
 <div id="orderdetail_productdetailsform" hidden>
 <form id="form_orderdetail_productdetails" action="orderdetailform_productdetailsprocess.php" method="post">
 <label for="sales_order_no">Sales Order No.:</label>
-        <input type="text" name="sales_order_no" id="sales_order_no" class="form-field salesorderno" required>
-
+        <input type="text" name="sales_order_no" id="sales_order_no_productdetails" class="form-field salesorderno" required>
+        <input type="hidden" name="sales_order_no_exists" id="sales_order_no_exists_productdetails" class="form-field salesorderexists" hidden> 
 <h2> Product Details </h2>
         <div id="product_details">
         <table border="1" id="product_details_table">
@@ -30,9 +30,7 @@
                     <!-- <th class="buttonTc"></th> -->
                 </tr>
             </thead>
-            <tbody>
-
-            </tbody>
+            <tbody></tbody>
         </table>
         <button type="button" id="addProductRow" class="button">Add Product Row</button>
         </div>
