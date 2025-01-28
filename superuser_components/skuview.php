@@ -1,5 +1,8 @@
 <div id="skuview" hidden>
         <h1>SKU List</h1>
+        <button>
+            <a href="reports/detailedskureport.php">SKU Detailed List</a>
+        </button>
         <div id="skutablediv">
             <table id="skutable" border="1">
                 <thead>
