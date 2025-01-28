@@ -49,7 +49,7 @@
 error_reporting(E_ERROR); 
 include("../connection/dbconnection.php");
 session_start();
-require_once 'vendor/autoload.php';
+require_once '../vendor/autoload.php';
 include("vendor/phpqrcode/qrlib.php");
 if (!isset($_SESSION['userdets']) || empty($_SESSION['userdets'])) {
     session_destroy();
