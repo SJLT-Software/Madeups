@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+// error_reporting(0);
 session_start();
 
 if (!isset($_SESSION['userdets']) || empty($_SESSION['userdets'])) {
@@ -13,6 +13,7 @@ if (isset($_SESSION['reporterror'])) {
     unset($_SESSION['reporterror']);
 }
 include("../connection/dbconnection.php");
+require_once('../vendor/autoload.php');
 $date = date("d-m-Y");
 use Dompdf\Dompdf;
 $dompdf = new Dompdf();
@@ -24,7 +25,7 @@ $content = "";
 $content .= '<html>
 <style>
 @page{
-    margin: 15;
+    margin: 5;
     size: A4 landscape;
 }
 .row{
@@ -42,6 +43,7 @@ $content .= '<html>
 }
 
 table{
+    font-size: 12px;
     border-collapse: collapse;
     width: 100%;
     border-spacing: 0;
@@ -56,7 +58,7 @@ table{
 td, th {
     border: 1px solid #444;
     font-size: 85%;
-    padding: 8px;
+    padding: 6px;
     text-align: center;
     vertical-align: middle;
     word-wrap: nowrap;

@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-require_once '../vendor/autoload.php';
+require_once('../vendor/autoload.php');
 use Dompdf\Dompdf;
 $dompdf = new Dompdf();
 if (isset($_SESSION['skureport_pdfgenerate'])) {
