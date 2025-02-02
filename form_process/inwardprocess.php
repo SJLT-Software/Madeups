@@ -46,7 +46,7 @@
             
 
 <?php
-// error_reporting(E_ERROR); 
+error_reporting(E_ERROR); 
 include("../connection/dbconnection.php");
 session_start();
 require_once '../vendor/autoload.php';
