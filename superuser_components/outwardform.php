@@ -9,6 +9,10 @@
             <label for="date">Date:</label>
             <input type="date" name="dateoutward" id="dateoutward" class="form-field" required>
 
+            <label for="orderdetail">Order Detail:</label>
+            <input type="text" name="orderdetail" placeholder="order no" id="orderdetail" class="form-field"
+                required>
+
             <label for="skuoutward">SKU:</label>
             <input id="skuoutward" name="skuoutward" type="text" class="form-field skuField">
 
@@ -20,6 +24,7 @@
             <label for="lotnooutward">Lot Number:</label>
             <input type="text" name="lotnooutward" placeholder="Lot Number" id="lotnooutward" class="form-field"
                 required>
+            
 
             <div id="rollinfo">
                 <input type="checkbox" name="selectedroll" id="selectedrolldefault" value="0" disabled hidden>

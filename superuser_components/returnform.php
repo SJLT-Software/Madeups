@@ -26,6 +26,10 @@
                 <option value="-" selected disabled>Choose roll</option>
             </select>
 
+            <label for="returnlocation">Location:</label>
+            <input type = "text" name="returnlocation" id="returnlocation" class="form-field-department" required>
+              
+
             <div id="pickedrollsreturn"></div>
             <input type="hidden" name="rollschoosenreturn" id="rollschoosenreturn" value="0" required>
         </div>
