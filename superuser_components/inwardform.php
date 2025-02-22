@@ -13,20 +13,36 @@
         <input type="hidden" id="namevalidationField" name="namevalidationField"
             pattern="^(?!.*SKU not found).*$" required>
 
-        <label for="width">Width:</label>
+        <label for="width">Finished Width:</label>
         <input id="width" name="width" type="number" min=0 step=0.001 class="form-field" placeholder="Width" required>
+
+        <label for="width">Greige Width:</label>
+        <input id="width" name="width" type="number" min=0 step=0.001 class="form-field" placeholder="Width" required>
+
+        <label for="dcno">Processing house DC No:</label>
+        <input type="text" name="dcno" placeholder="DC No / Bill No" id="dcno" class="form-field" required>
+
 
         <label for="lotno">Lot Number:</label>
         <input type="text" name="lotno" placeholder="Lot Number" id="lotno" class="form-field" required>
 
         <label for="construction">Construction:</label>
-        <input id="construction" name="construction" type="text" class="form-field" required>
+        <input id="construction" name="construction" type="text" class="form-field">
+
+        <label for="dyeing_unit">Inward Dyeing Unit:</label>
+        <input id="dyeing_unit" name="dyeing_unit" type="text" class="form-field">
+
+        <label for="actual_GSM">Actual GSM:</label>
+        <input id="actual_GSM" name="actual_GSM" type="text" class="form-field" required>
+
+        <label for="rate_kg">Rate/Kg:</label>
+        <input id="rate_kg" name="rate_kg" type="text" class="form-field" required>
 
         <label for="qty">No. of rolls:</label>
         <input type="number" placeholder="No. of rolls" name="qty" id="qty" class="form-field" min=0 max=100
             placeholder="Enter no. of Rolls" required>
 
-        <div id="fieldsContainer"></div>
+        <div id="fieldsContainer"></div>      <!-- Include one more column in div id fieldscontainer -after roll no, meters, add location (so for each roll, location has to be mentioned) -->
 
         <label for="totalmeters">Total Meters:</label>
         <input type="number" name="totalmeters" placeholder="Total meters" id="totalmeters" disabled min="0"

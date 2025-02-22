@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inward Process</title>
-    <script type="text/javascript" src="JS_MODS/html2canvas.js"></script>
-    <script type="text/javascript" src="JS_MODS/jquery_library.min.js"></script>
+    <script type="text/javascript" src="../JS_MODS/html2canvas.js"></script>
+    <script type="text/javascript" src="../JS_MODS/jquery_library.min.js"></script>
 
     <style>
         #downloads {
@@ -50,7 +50,7 @@ error_reporting(E_ERROR);
 include("../connection/dbconnection.php");
 session_start();
 require_once '../vendor/autoload.php';
-include("vendor/phpqrcode/qrlib.php");
+include("../vendor/phpqrcode/qrlib.php");
 if (!isset($_SESSION['userdets']) || empty($_SESSION['userdets'])) {
     session_destroy();
     header("Location: index.php");
@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $filename = $id . '_' . $sku . '_' . $lotno . '_' . $rollnumber . '.png';
             $qrSize = min(WIDTH_PIXELS, HEIGHT_PIXELS) / 2; // Example size, adjust as needed
-            $qrCode = 'tempdump/' . $filename;
+            $qrCode = '../tempdump/' . $filename;
             QRcode::png($id . '_' . $sku . '_' . $name .  '_' . $lotno . '_' . $rollnumber, $qrCode, QR_ECLEVEL_L, $qrSize / 25);
 
             $qrImage = imagecreatefrompng($qrCode);
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             imagecopy($finalImage, $qrImage, $qrX, $qrY, 0, 0, imagesx($qrImage), imagesy($qrImage));
             $fontSize = 10; // Adjust font size as needed
-            $fontPath = 'fonts/Roboto-Bold.ttf';
+            $fontPath = '../fonts/Roboto-Bold.ttf';
             $fontColor = imagecolorallocate($finalImage, 0, 0, 0);
             $text = $sku . '_' . $name;
             $bbox = imagettfbbox($fontSize, 0, $fontPath, $text);
@@ -145,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $textY = $textYStart + ($lineHeight * $index);
         imagettftext($finalImage, $fontSize, 0, $textXRight, $textY, $fontColor, $fontPath, $line);
     }
-            $filepath = 'tempdump/' . $filename;
+            $filepath = '../tempdump/' . $filename;
             imagepng($finalImage, $filepath);
             imagedestroy($finalImage);
             imagedestroy($qrImage);
