@@ -16,7 +16,9 @@ $username = $_SESSION['userdets'][1];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(isset($_POST['outward_qr'])) {
         $id = $_POST['selectedrolloutward'];
+        // $orderdetail = $_POST['orderdetail'];
         $date = date("Y-m-d");
+        // $query = "UPDATE datadb SET status = 'out', date = '$date', order_detail = '$orderdetail' WHERE id = '$id'";
         $query = "UPDATE datadb SET status = 'out', date = '$date' WHERE id = '$id'";
         mysqli_query($con, $query);
         unset($_POST['outward_qr']);
@@ -37,7 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $norolls = $_POST['rollschoosen'];
     for ($i = 0; $i < $norolls; $i++) {
         $id = $_POST['selectedroll' . $i];
-        $query = "UPDATE datadb SET status = 'out', date = '$date' WHERE id = '$id'";
+        $orderdetail = $_POST['orderdetail'];
+        $query = "UPDATE datadb SET status = 'out', date = '$date', order_detail = '$orderdetail' WHERE id = '$id'";
         mysqli_query($con, $query);
         $rollinfoquery = "SELECT * FROM datadb WHERE id = '$id'";
         $result = mysqli_query($con, $rollinfoquery);

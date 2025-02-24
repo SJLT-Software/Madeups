@@ -40,11 +40,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     for ($i = 0; $i < $norolls; $i++) {
         $id = $_POST['selectedrollreturn' . $i];
         $meters = $_POST['rollmetersreturn' . $i];
+        $returnlocation = $_POST['returnlocation'.$i];
         $query = "SELECT currentmeters FROM datadb WHERE id = '$id'";
         $result = mysqli_query($con, $query);
         $row = mysqli_fetch_assoc($result);
         $meters = $row['currentmeters'] - $meters;
-        $query = "UPDATE datadb SET status = 'in', currentmeters = '$meters', date = '$date' WHERE id = '$id'";
+        $query = "UPDATE datadb SET status = 'in', currentmeters = '$meters', date = '$date', location = '$returnlocation' WHERE id = '$id'";
         mysqli_query($con, $query);
         $rollinfoquery = "SELECT * FROM datadb WHERE id = '$id'";
         $result = mysqli_query($con, $rollinfoquery);

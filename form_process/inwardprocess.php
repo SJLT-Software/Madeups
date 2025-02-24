@@ -89,13 +89,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sku = $_POST['skuinward'];
         $name = $_POST['namevalidationField'];
         $construction = $_POST['construction'];
-        $width = $_POST['width'];
+        $finishedwidth = $_POST['finished_width'];
+        $greigewidth = $_POST['greige_width'];
+        $dcno = $_POST['dcno'];
+        $dyeingunit = $_POST['dyeing_unit'];
+        $actualgsm = $_POST['actual_GSM'];
+        $ratekg = $_POST['rate_kg'];
+
         for ($i = 1; $i <= $norolls; $i++) {
             $rollnumber = $_POST['rollnumber' . $i];
             $rollmeters = $_POST['rollmeters' . $i];
+            $rolllocation = $_POST['location' . $i];
 
-            $insertQuery = "INSERT INTO datadb (date, sku, name, width, lotno, construction, norolls, totalmeters, rollno, rollmeters, currentmeters) VALUES ('$date', '$sku', '$name', '$width', '$lotno', '$construction', '$norolls', '$totalmeters', '$rollnumber', '$rollmeters', '$rollmeters')";
-            mysqli_query($con, $insertQuery);
+            $query = "INSERT INTO `datadb` (`date`, `sku`, `name`, `greige_width`, `finished_width`, `dcno`, `lotno`, `construction`, `dyeing_unit`, `actual_gsm`, `rate_kg`, `norolls`, `totalmeters`, `rollno`, `rollmeters`, `location`, `currentmeters`) VALUES ('$date', '$sku', '$name', '$greigewidth', '$finishedwidth', '$dcno', '$lotno', '$construction', '$dyeingunit', '$actualgsm', '$ratekg', '$norolls', '$totalmeters', '$rollnumber', '$rollmeters', '$rolllocation', '$rollmeters')";
+            mysqli_query($con, $query);
             $id = mysqli_insert_id($con);
             $logquery = "INSERT INTO logdb (date, username, sku, lotno, norolls, rollno, rollid, inward_meters) VALUES ('$date', '$username', '$sku', '$lotno', '$norolls', '$rollnumber', '$id', '$rollmeters')";
             mysqli_query($con, $logquery);

@@ -13,11 +13,11 @@
         <input type="hidden" id="namevalidationField" name="namevalidationField"
             pattern="^(?!.*SKU not found).*$" required>
 
-        <label for="width">Finished Width:</label>
-        <input id="width" name="width" type="number" min=0 step=0.001 class="form-field" placeholder="Width" required>
+        <label for="finished_width">Finished Width:</label>
+        <input id="finished_width" name="finished_width" type="number" min=0 step=0.001 class="form-field" placeholder="Width" required>
 
-        <label for="width">Greige Width:</label>
-        <input id="width" name="width" type="number" min=0 step=0.001 class="form-field" placeholder="Width" required>
+        <label for="greige_width">Greige Width:</label>
+        <input id="greige_width" name="greige_width" type="number" min=0 step=0.001 class="form-field" placeholder="Width" required>
 
         <label for="dcno">Processing house DC No:</label>
         <input type="text" name="dcno" placeholder="DC No / Bill No" id="dcno" class="form-field" required>
@@ -66,8 +66,10 @@
                     var inputRollNumber = $('<input id="rollnumber' + i + '" name="rollnumber' + i + '" type="text" class="form-field" placeholder="Roll Number" required>');
                     var labelRollMeters = $('<label for="rollmeters' + i + '" class="form-label2">Roll Meters:</label>');
                     var inputRollMeters = $('<input id="rollmeters' + i + '" name="rollmeters' + i + '" type="number" class="form-field roll-meters" min="0" step="0.0001" placeholder="Roll Meters" required>');
+                    var labelLocation = $('<label for="location' + i + '" class="form-label3">Location:</label>');
+                    var inputLocation = $('<input id="location' + i + '" name="location' + i + '" type="text" class="form-field" placeholder="Location" required>');
 
-                    div.append(labelRollNumber, inputRollNumber, labelRollMeters, inputRollMeters);
+                    div.append(labelRollNumber, inputRollNumber, labelRollMeters, inputRollMeters, labelLocation, inputLocation);
                     container.append(div);
                 }
                 $('.roll-meters').on('change', function() {

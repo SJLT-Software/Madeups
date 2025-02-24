@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 08, 2025 at 05:57 PM
+-- Generation Time: Feb 23, 2025 at 04:44 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,12 +29,10 @@ USE `madeups`;
 -- Table structure for table `creds`
 --
 
-DROP TABLE IF EXISTS `creds`;
-CREATE TABLE IF NOT EXISTS `creds` (
+CREATE TABLE `creds` (
   `name` varchar(200) NOT NULL,
   `userid` varchar(200) NOT NULL,
-  `password` varchar(200) NOT NULL,
-  PRIMARY KEY (`userid`)
+  `password` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -43,23 +41,28 @@ CREATE TABLE IF NOT EXISTS `creds` (
 -- Table structure for table `datadb`
 --
 
-DROP TABLE IF EXISTS `datadb`;
-CREATE TABLE IF NOT EXISTS `datadb` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `datadb` (
+  `id` int(11) NOT NULL,
   `date` date NOT NULL,
   `sku` varchar(10) NOT NULL,
   `name` varchar(200) NOT NULL,
-  `width` decimal(10,0) NOT NULL,
+  `order_detail` varchar(200) NOT NULL DEFAULT '-',
+  `greige_width` float NOT NULL,
+  `finished_width` float NOT NULL,
+  `dcno` varchar(200) NOT NULL,
   `lotno` varchar(100) NOT NULL,
   `construction` varchar(200) NOT NULL,
+  `dyeing_unit` varchar(200) NOT NULL,
+  `actual_gsm` varchar(200) NOT NULL,
+  `rate_kg` varchar(100) NOT NULL,
   `norolls` int(11) NOT NULL,
   `totalmeters` float NOT NULL,
   `rollno` varchar(30) NOT NULL,
   `rollmeters` float NOT NULL,
+  `location` varchar(200) NOT NULL DEFAULT 'madeups',
   `currentmeters` float NOT NULL,
   `remarks` varchar(2000) NOT NULL,
-  `status` varchar(200) NOT NULL DEFAULT 'in',
-  PRIMARY KEY (`id`)
+  `status` varchar(200) NOT NULL DEFAULT 'in'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -68,10 +71,9 @@ CREATE TABLE IF NOT EXISTS `datadb` (
 -- Table structure for table `logdb`
 --
 
-DROP TABLE IF EXISTS `logdb`;
-CREATE TABLE IF NOT EXISTS `logdb` (
+CREATE TABLE `logdb` (
   `currentdate` timestamp NOT NULL DEFAULT current_timestamp(),
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `date` date NOT NULL,
   `username` varchar(200) NOT NULL,
   `sku` varchar(100) NOT NULL,
@@ -82,8 +84,7 @@ CREATE TABLE IF NOT EXISTS `logdb` (
   `inward_meters` decimal(10,0) NOT NULL,
   `outward_meters` decimal(10,0) NOT NULL,
   `return_meters` decimal(10,0) NOT NULL,
-  `remarks` varchar(500) NOT NULL,
-  PRIMARY KEY (`id`)
+  `remarks` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -92,8 +93,7 @@ CREATE TABLE IF NOT EXISTS `logdb` (
 -- Table structure for table `main`
 --
 
-DROP TABLE IF EXISTS `main`;
-CREATE TABLE IF NOT EXISTS `main` (
+CREATE TABLE `main` (
   `SKU` varchar(20) NOT NULL,
   `Name` varchar(500) NOT NULL,
   `ThreadCount` int(11) NOT NULL,
@@ -116,8 +116,7 @@ CREATE TABLE IF NOT EXISTS `main` (
   `GSM` varchar(100) NOT NULL,
   `Color` varchar(100) NOT NULL,
   `Finished_Width` varchar(50) NOT NULL,
-  `Greige_Width` varchar(50) NOT NULL,
-  PRIMARY KEY (`SKU`)
+  `Greige_Width` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -126,8 +125,7 @@ CREATE TABLE IF NOT EXISTS `main` (
 -- Table structure for table `orderchecklistitems`
 --
 
-DROP TABLE IF EXISTS `orderchecklistitems`;
-CREATE TABLE IF NOT EXISTS `orderchecklistitems` (
+CREATE TABLE `orderchecklistitems` (
   `user` varchar(250) NOT NULL,
   `date` datetime NOT NULL DEFAULT current_timestamp(),
   `sales_order_no` int(250) NOT NULL,
@@ -147,8 +145,7 @@ CREATE TABLE IF NOT EXISTS `orderchecklistitems` (
   `tag` varchar(250) DEFAULT NULL,
   `poly_bag` varchar(250) DEFAULT NULL,
   `carton_box` varchar(250) DEFAULT NULL,
-  `carton_box_sticker` varchar(250) DEFAULT NULL,
-  PRIMARY KEY (`sales_order_no`)
+  `carton_box_sticker` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -157,9 +154,8 @@ CREATE TABLE IF NOT EXISTS `orderchecklistitems` (
 -- Table structure for table `orderproductdetails`
 --
 
-DROP TABLE IF EXISTS `orderproductdetails`;
-CREATE TABLE IF NOT EXISTS `orderproductdetails` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `orderproductdetails` (
+  `id` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT current_timestamp(),
   `user` varchar(100) NOT NULL,
   `sales_order_no` int(11) NOT NULL,
@@ -179,9 +175,70 @@ CREATE TABLE IF NOT EXISTS `orderproductdetails` (
   `thread_code` varchar(250) NOT NULL,
   `label` varchar(500) NOT NULL,
   `elastic` varchar(250) NOT NULL,
-  `label_placement` varchar(500) NOT NULL,
-  PRIMARY KEY (`id`)
+  `label_placement` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `creds`
+--
+ALTER TABLE `creds`
+  ADD PRIMARY KEY (`userid`);
+
+--
+-- Indexes for table `datadb`
+--
+ALTER TABLE `datadb`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `logdb`
+--
+ALTER TABLE `logdb`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `main`
+--
+ALTER TABLE `main`
+  ADD PRIMARY KEY (`SKU`);
+
+--
+-- Indexes for table `orderchecklistitems`
+--
+ALTER TABLE `orderchecklistitems`
+  ADD PRIMARY KEY (`sales_order_no`);
+
+--
+-- Indexes for table `orderproductdetails`
+--
+ALTER TABLE `orderproductdetails`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `datadb`
+--
+ALTER TABLE `datadb`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `logdb`
+--
+ALTER TABLE `logdb`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `orderproductdetails`
+--
+ALTER TABLE `orderproductdetails`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

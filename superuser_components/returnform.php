@@ -26,8 +26,6 @@
                 <option value="-" selected disabled>Choose roll</option>
             </select>
 
-            <label for="returnlocation">Location:</label>
-            <input type = "text" name="returnlocation" id="returnlocation" class="form-field-department" required>
               
 
             <div id="pickedrollsreturn"></div>
@@ -141,6 +139,19 @@
                             min: '0',
                             step: '0.0001',
                             placeholder: 'Meters Consumed',
+                            required: true
+                        })
+                    );
+                    $('#form_return_elements').append(
+                        $('<label>').attr({
+                            for: 'returnlocation',
+                            class: 'form-label'
+                        }).text('Location:'),
+                        $('<input>').attr({
+                            type: 'text',
+                            name: 'returnlocation',
+                            id: 'returnlocation',
+                            class: 'form-field',
                             required: true
                         })
                     );
