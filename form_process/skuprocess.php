@@ -13,7 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: superuser.php");
         exit();
     } else {
-        $name = $_POST['Name'];
+        if(!empty($_POST['Name'])) {
+            $name = $_POST['Name'];
+        }
+        else {
+            $name = "SKU Exists(No Name)!!";
+        }
         $tc = $_POST['tc'];
         $fabricContent = $_POST['FabricContent'];
         $weaveDesign = $_POST['WeaveDesign'];

@@ -154,7 +154,7 @@ td.notop {
         $query = "SELECT count(*) as count from logdb where lotno = '" . $log['lotno'] . "' and sku = '" . $log['sku'] . "'";
         $count_lots = mysqli_fetch_array(mysqli_query($con, $query))['count'];
         $content .= '<td class="notop">' . $log['lotno'] . '</td>
-        <td class="notop">' . $lotdata['width'] . '</td>
+        <td class="notop">' . $lotdata['finished_width'] . '</td>
         <td class="notop">' . $lotdata['construction'] . '</td>';
         $lotno_info = $log['lotno'];
         $lot_info = false;
