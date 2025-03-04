@@ -17,10 +17,10 @@
         <input id="finished_width" name="finished_width" type="number" min=0 step=0.001 class="form-field" placeholder="Width" required>
 
         <label for="greige_width">Greige Width:</label>
-        <input id="greige_width" name="greige_width" type="number" min=0 step=0.001 class="form-field" placeholder="Width" required>
+        <input id="greige_width" name="greige_width" type="number" min=0 step=0.001 class="form-field" placeholder="Width">
 
         <label for="dcno">Processing house DC No:</label>
-        <input type="text" name="dcno" placeholder="DC No / Bill No" id="dcno" class="form-field" required>
+        <input type="text" name="dcno" placeholder="DC No / Bill No" id="dcno" class="form-field">
 
 
         <label for="lotno">Lot Number:</label>
@@ -33,10 +33,10 @@
         <input id="dyeing_unit" name="dyeing_unit" type="text" class="form-field">
 
         <label for="actual_GSM">Actual GSM:</label>
-        <input id="actual_GSM" name="actual_GSM" type="text" class="form-field" required>
+        <input id="actual_GSM" name="actual_GSM" type="text" class="form-field">
 
         <label for="rate_kg">Rate/Kg:</label>
-        <input id="rate_kg" name="rate_kg" type="text" class="form-field" required>
+        <input id="rate_kg" name="rate_kg" type="text" class="form-field">
 
         <label for="qty">No. of rolls:</label>
         <input type="number" placeholder="No. of rolls" name="qty" id="qty" class="form-field" min=0 max=100

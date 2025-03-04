@@ -14,7 +14,7 @@
 </tr>
 <tr>
     <td>   <input id="sku" name="sku" type="text" class="form-field skuField" > </td>
-    <td>  <input id="Name" name="Name" type="text" class="form-field" required> </td>
+    <td>  <input id="Name" name="Name" type="text" class="form-field"> </td>
     <td><input id="tc" name="tc" type="number" class="form-field" required> </td>
     <td><input id="FabricContent" name="FabricContent" type="text" class="form-field" required> </td>
     <td><input id="WeaveDesign" name="WeaveDesign" type="text" class="form-field" required> </td>

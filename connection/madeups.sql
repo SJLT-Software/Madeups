@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 23, 2025 at 04:44 AM
+-- Generation Time: Feb 24, 2025 at 05:08 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,6 +29,7 @@ USE `madeups`;
 -- Table structure for table `creds`
 --
 
+DROP TABLE IF EXISTS `creds`;
 CREATE TABLE `creds` (
   `name` varchar(200) NOT NULL,
   `userid` varchar(200) NOT NULL,
@@ -41,6 +42,7 @@ CREATE TABLE `creds` (
 -- Table structure for table `datadb`
 --
 
+DROP TABLE IF EXISTS `datadb`;
 CREATE TABLE `datadb` (
   `id` int(11) NOT NULL,
   `date` date NOT NULL,
@@ -71,6 +73,7 @@ CREATE TABLE `datadb` (
 -- Table structure for table `logdb`
 --
 
+DROP TABLE IF EXISTS `logdb`;
 CREATE TABLE `logdb` (
   `currentdate` timestamp NOT NULL DEFAULT current_timestamp(),
   `id` int(11) NOT NULL,
@@ -93,6 +96,7 @@ CREATE TABLE `logdb` (
 -- Table structure for table `main`
 --
 
+DROP TABLE IF EXISTS `main`;
 CREATE TABLE `main` (
   `SKU` varchar(20) NOT NULL,
   `Name` varchar(500) NOT NULL,
@@ -115,8 +119,8 @@ CREATE TABLE `main` (
   `Greige_Ply` varchar(100) NOT NULL,
   `GSM` varchar(100) NOT NULL,
   `Color` varchar(100) NOT NULL,
-  `Finished_Width` varchar(50) NOT NULL,
-  `Greige_Width` varchar(50) NOT NULL
+  `Finished_Width` varchar(50) DEFAULT NULL,
+  `Greige_Width` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -125,6 +129,7 @@ CREATE TABLE `main` (
 -- Table structure for table `orderchecklistitems`
 --
 
+DROP TABLE IF EXISTS `orderchecklistitems`;
 CREATE TABLE `orderchecklistitems` (
   `user` varchar(250) NOT NULL,
   `date` datetime NOT NULL DEFAULT current_timestamp(),
@@ -154,6 +159,7 @@ CREATE TABLE `orderchecklistitems` (
 -- Table structure for table `orderproductdetails`
 --
 
+DROP TABLE IF EXISTS `orderproductdetails`;
 CREATE TABLE `orderproductdetails` (
   `id` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT current_timestamp(),
