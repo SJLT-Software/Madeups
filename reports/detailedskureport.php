@@ -84,55 +84,34 @@ h1{
 <div class = "heading">  <h1>Warehouse Overview as on '. $date .'</h1></div>
 <div id="tablediv">
 <table>
-    <tr><th> SKU </th>
+    <tr>
+        <th>SNo</th>
+        <th> SKU </th>
         <th> Name</th>
         <th> TC </th>
         <th> Fabric Content </th>
         <th> Weave Design </th>
-        <th> Finished Warp Count </th>
-        <th> Finished Warp Composition </th>
-        <th> Finished Weft Count </th>
-        <th> Finished Weft Composition </th>
-        <th> Finished EPI </th>
-        <th> Finished PPI </th>
-        <th> Finished Ply </th>
-        <th> Greige Warp Count </th>
-        <th> Greige Warp Composition </th>
-        <th> Greige Weft Count </th>
-        <th> Greige Weft Composition </th>
-        <th> Greige EPI </th>
-        <th> Greige PPI </th>
-        <th> Greige Ply </th>
+        <th> Finished Fabric Construction </th>
+        <th> Greige Fabric Construction </th>
         <th> GSM </th>
         <th> Color </th>
         <th> Finished Width </th>
         <th> Greige Width </th>
     </tr>';
     while ($row = mysqli_fetch_array($rolls)) {
+        $finishedFabricConstruction = 0; //Warp_count*Weft_count \n EPI*PPI \n Warp_Composition Weft _Composition 
+        $greigeFabricConstruction = 0;
         $content.= '<tr>
+        <td><?php static $i = 1; echo $i++; ?></td>
         <td>' . $row['SKU'] . '</td>
         <td>' . $row['Name'] . '</td>
         <td>' . $row['ThreadCount'] . '</td>
         <td>' . $row['FabricContent'] . '</td>
         <td>' . $row['WeaveDesign'] . '</td>
-        <td>' . $row['Finished_WarpCount'] . '</td>
-        <td>' . $row['Finished_WarpComposition'] . '</td>
-        <td>' . $row['Finished_WeftCount'] . '</td>
-        <td>' . $row['Finished_WeftComposition'] . '</td>
-        <td>' . $row['Finished_EPI'] . '</td>
-        <td>' . $row['Finished_PPI'] . '</td>
-        <td>' . $row['Finished_Ply'] . '</td>
-        <td>' . $row['Greige_WarpCount'] . '</td>
-        <td>' . $row['Greige_WarpComposition'] . '</td>
-        <td>' . $row['Greige_WeftCount'] . '</td>
-        <td>' . $row['Greige_WeftComposition'] . '</td>
-        <td>' . $row['Greige_EPI'] . '</td>
-        <td>' . $row['Greige_PPI'] . '</td>
-        <td>' . $row['Greige_Ply'] . '</td>
+        <td>' .$finishedFabricConstruction . '</td>
+        <td>' .$greigeFabricConstruction .'</td>
         <td>' . $row['GSM'] . '</td>
         <td>' . $row['Color'] . '</td>
-        <td>' . $row['Finished_Width'] . '</td>
-        <td>' . $row['Greige_Width'] . '</td>
         </tr>';
     
     }

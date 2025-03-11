@@ -88,16 +88,20 @@ td.notop {
 
 </style>
 <body>
-<div class = "heading">  <h1>Warehouse Report as on '. $date .'</h1></div>
+<div class = "heading">  <h1>Warehouse Stock Report as on '. $date .'</h1></div>
 <div id="tablediv">
 <table border="1">
     <thead>
-    <tr><th> SKU </th>
+    <tr><th> SNo </th>
+    <th> SKU </th>
         <th> Name</th>
         <th> TC </th>
-        <th> Lot no</th>
-        <th> Width</th>
+        <th> Weave Design </th>
+        <th> Finished Width</th>
         <th> Construction</th>
+        <th> Dyeing Unit </th>
+        <th> Lot no</th>
+        <th> Location </th>
         <th> Roll no </th>
         <th> Date </th>
         <th> Inward </th>
@@ -120,9 +124,10 @@ td.notop {
     $roll_info = true;
     $rollno_info = "";
     $count_rolls = 0;
-    
+    $i = 1;
     while ($log = mysqli_fetch_array($logs)) {
-        $content .= '<tr>';
+        $content .= '<tr><td>' . $i . '</td>';
+        $i++;
         if($skuno_info != $log['sku']) {
             $sku_info = true;
         }
@@ -134,13 +139,16 @@ td.notop {
         $count_skus = mysqli_fetch_array(mysqli_query($con, $query))['count'];
         $content .= '<td class="notop">' . $log['sku'] . '</td>
         <td class="notop">' . $skudata['Name'] . '</td>
-        <td class="notop">' . $skudata['ThreadCount'] . '</td>';
+        <td class="notop">' . $skudata['ThreadCount'] . '</td>
+        <td class="notop">' . $skudata['WeaveDesign'] . '</td>';
         $skuno_info = $log['sku'];
         $sku_info = false;
         }
         else {
             $content .= '<td class="mergetd"></td>
         <td class="mergetd"></td>
+                <td class="mergetd"></td>
+
         <td class="mergetd"></td>';
             
         }
@@ -153,15 +161,18 @@ td.notop {
         $lotdata = mysqli_fetch_array($lot_data);
         $query = "SELECT count(*) as count from logdb where lotno = '" . $log['lotno'] . "' and sku = '" . $log['sku'] . "'";
         $count_lots = mysqli_fetch_array(mysqli_query($con, $query))['count'];
-        $content .= '<td class="notop">' . $log['lotno'] . '</td>
-        <td class="notop">' . $lotdata['finished_width'] . '</td>
-        <td class="notop">' . $lotdata['construction'] . '</td>';
+        $content .= 
+        '<td class="notop">' . $lotdata['finished_width'] . '</td>
+        <td class="notop">' . $lotdata['construction'] . '</td>
+        <td class="notop">' . $lotdata['dyeing_unit'] . '</td>
+        <td class="notop">' . $log['lotno'] . '</td>';
         $lotno_info = $log['lotno'];
         $lot_info = false;
         }
         else {
             $content .= '<td class="mergetd"></td>
         <td class="mergetd"></td>
+                <td class="mergetd"></td>
         <td class="mergetd"></td>';
         }
 
@@ -171,12 +182,14 @@ td.notop {
         if($roll_info) {
         $query = "SELECT count(*) as count from logdb where rollno = '" . $log['rollno'] . "' and lotno = '" . $log['lotno'] . "' and sku = '" . $log['sku'] . "'";
         $count_rolls = mysqli_fetch_array(mysqli_query($con, $query))['count'];
-        $content .= '<td class="notop">' . $log['rollno'] . '</td>';
+        $content .= '<td class="notop">' . $log['location'] . '</td>
+        <td class="notop">' . $log['rollno'] . '</td>';
         $rollno_info = $log['rollno'];
         $roll_info = false;
         }
         else {
-            $content .= '<td class="mergetd"></td>';
+            $content .= '<td class="mergetd"></td>
+                    <td class="mergetd"></td>';
         }
         $date_log = DateTime::createFromFormat('Y-m-d', $log['date'])->format('d-m-Y');
         $content .= '
