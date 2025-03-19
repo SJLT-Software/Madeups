@@ -1,2 +1,4 @@
-SJLT Madeups development codebase - Manav
-Import db from connection/madeups-table-structures-xampp_import.sql into phpmyadmin
+SJLT Madeups development codebase<br />
+Import db from *.sql into phpmyadmin for tables<br />
+<br />
+Stack:
