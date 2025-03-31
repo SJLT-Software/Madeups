@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 11, 2025 at 08:09 PM
+-- Generation Time: Mar 31, 2025 at 06:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -38,6 +38,7 @@ CREATE TABLE `creds` (
 --
 
 INSERT INTO `creds` (`name`, `userid`, `password`) VALUES
+('Madhumitha', 'madhu', 'madhu123'),
 ('Nivedha', 'nivedha', 'madeups123');
 
 -- --------------------------------------------------------
