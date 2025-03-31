@@ -99,8 +99,9 @@ h1{
         <th> Greige Width </th>
     </tr>';
     while ($row = mysqli_fetch_array($rolls)) {
-        $finishedFabricConstruction = 0; //Warp_count*Weft_count \n EPI*PPI \n Warp_Composition Weft _Composition 
-        $greigeFabricConstruction = 0;
+        //Warp_count Warp_Composition * Weft_count Weft _Composition\n EPI*PPI \n Ply-Width 
+        $finishedFabricConstruction = $row['Finished_WarpCount'] . " " . $row['Finished_WarpComposition'] . " * " . $row['Finished_WeftCount'] . " " . $row['Finished_WeftComposition'] . "\n" . $row['Finished_EPI'] . "*" . $row['Finished_PPI'] . "\n" . $row['Finished_Ply'] . "-" . $row['Finished_Width'];
+        $greigeFabricConstruction = $row['Greige_WarpCount'] . " " . $row['Greige_WarpComposition'] . " * " . $row['Greige_WeftCount'] . " " . $row['Greige_WeftComposition'] . "\n" . $row['Greige_EPI'] . "*" . $row['Greige_PPI'] . "\n" . $row['Greige_Ply'] . "-" . $row['Greige_Width'];
         $content.= '<tr>
         <td><?php static $i = 1; echo $i++; ?></td>
         <td>' . $row['SKU'] . '</td>
