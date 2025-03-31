@@ -1,5 +1,5 @@
 <?php
-// error_reporting(0);
+error_reporting(0);
 session_start();
 
 if (!isset($_SESSION['userdets']) || empty($_SESSION['userdets'])) {
@@ -95,8 +95,6 @@ h1{
         <th> Greige Fabric Construction </th>
         <th> GSM </th>
         <th> Color </th>
-        <th> Finished Width </th>
-        <th> Greige Width </th>
     </tr>';
     while ($row = mysqli_fetch_array($rolls)) {
         //Warp_count Warp_Composition * Weft_count Weft _Composition\n EPI*PPI \n Ply-Width 

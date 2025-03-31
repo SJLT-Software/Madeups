@@ -161,10 +161,21 @@ td.notop {
         $lotdata = mysqli_fetch_array($lot_data);
         $query = "SELECT count(*) as count from logdb where lotno = '" . $log['lotno'] . "' and sku = '" . $log['sku'] . "'";
         $count_lots = mysqli_fetch_array(mysqli_query($con, $query))['count'];
+        $constructionquery = "SELECT * from main where SKU = '" . $log['sku'] . "'";
+        $construction_data = mysqli_query($con, $constructionquery);
+        $construction = mysqli_fetch_array($construction_data);
+        // echo json_encode($construction);
+        //Construdction = Warp_count Warp_Composition * Weft_count Weft _Composition\n EPI*PPI \n Ply-Width 
+        $finishedFabricConstruction = $construction['Finished_WarpCount'] . " " . $construction['Finished_WarpComposition'] . " * " . $construction['Finished_WeftCount'] . " " . $construction['Finished_WeftComposition'] . "<br>" . $construction['Finished_EPI'] . "*" . $construction['Finished_PPI'] . "<br>" . $construction['Finished_Ply'];
+        // echo "<script>console.log(Finished Fabric Construction: " . $finishedFabricConstruction . ")</script>";
+        $dyeingunitQuery = "SELECT dyeing_unit from datadb where lotno = '" . $log['lotno'] . "' and sku = '" . $log['sku'] . "'";
+        $dyeingunit_data = mysqli_query($con, $dyeingunitQuery);
+        $dyeingunit = mysqli_fetch_array($dyeingunit_data);
+        $dyeingunit = $dyeingunit['dyeing_unit'];
         $content .= 
         '<td class="notop">' . $lotdata['finished_width'] . '</td>
-        <td class="notop">' . $lotdata['construction'] . '</td>
-        <td class="notop">' . $lotdata['dyeing_unit'] . '</td>
+        <td class="notop">' . $finishedFabricConstruction . '</td>
+        <td class="notop">' . $dyeingunit . '</td>
         <td class="notop">' . $log['lotno'] . '</td>';
         $lotno_info = $log['lotno'];
         $lot_info = false;
@@ -182,7 +193,10 @@ td.notop {
         if($roll_info) {
         $query = "SELECT count(*) as count from logdb where rollno = '" . $log['rollno'] . "' and lotno = '" . $log['lotno'] . "' and sku = '" . $log['sku'] . "'";
         $count_rolls = mysqli_fetch_array(mysqli_query($con, $query))['count'];
-        $content .= '<td class="notop">' . $log['location'] . '</td>
+        $locationQuery = "SELECT location from datadb where lotno = '" . $log['lotno'] . "' and rollno = '" . $log['rollno'] . "' and sku = '" . $log['sku'] . "'";
+        $location_data = mysqli_query($con, $locationQuery);
+        $location = mysqli_fetch_array($location_data);
+        $content .= '<td class="notop">' . $location['location'] . '</td>
         <td class="notop">' . $log['rollno'] . '</td>';
         $rollno_info = $log['rollno'];
         $roll_info = false;
@@ -246,7 +260,6 @@ $dompdf->loadHtml($content);
 $dompdf->setPaper('A4', 'landscape');
 $dompdf->render();
 $dompdf->stream("Madeups warehouse report as on ". $date .".pdf");
-
 header("Location: ../superuser.php");
 exit();
 ?>
