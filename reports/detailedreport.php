@@ -78,13 +78,6 @@ thead {
 tr.page-break {
     page-break-before: always;
 }
-td.mergetd {
-    border-bottom: 0;
-    border-top: 0;
-}
-td.notop {
-    border-bottom: 0;
-}
 
 </style>
 <body>
@@ -114,97 +107,53 @@ td.notop {
     <tbody>';
     $query = "SELECT * from logdb order by sku,lotno,rollno,date desc";
     $logs = mysqli_query($con, $query);
-    $rows_per_page = 25;
-    $lot_info = true;
-    $lotno_info = "";
-    $count_lots = 0;
-    $sku_info = true;
-    $skuno_info = "";
-    $count_skus = 0;
-    $roll_info = true;
-    $rollno_info = "";
-    $count_rolls = 0;
+    
     $i = 1;
     while ($log = mysqli_fetch_array($logs)) {
         $content .= '<tr><td>' . $i . '</td>';
         $i++;
-        if($skuno_info != $log['sku']) {
-            $sku_info = true;
-        }
-        if($sku_info) {
+        
+        
         $query = "SELECT * from main where SKU = '" . $log['sku'] . "'";
         $sku_data = mysqli_query($con, $query);
         $skudata = mysqli_fetch_array($sku_data);
-        $query = "SELECT count(*) as count from logdb where sku = '" . $log['sku'] . "'";
-        $count_skus = mysqli_fetch_array(mysqli_query($con, $query))['count'];
-        $content .= '<td class="notop">' . $log['sku'] . '</td>
-        <td class="notop">' . $skudata['Name'] . '</td>
-        <td class="notop">' . $skudata['ThreadCount'] . '</td>
-        <td class="notop">' . $skudata['WeaveDesign'] . '</td>';
-        $skuno_info = $log['sku'];
-        $sku_info = false;
-        }
-        else {
-            $content .= '<td class="mergetd"></td>
-        <td class="mergetd"></td>
-                <td class="mergetd"></td>
 
-        <td class="mergetd"></td>';
-            
-        }
-        if($lotno_info != $log['lotno']) {
-            $lot_info = true;
-        }
-        if($lot_info) {
-        $query = "SELECT * from datadb where lotno = '" . $log['lotno'] . "'";
-        $lot_data = mysqli_query($con, $query);
-        $lotdata = mysqli_fetch_array($lot_data);
-        $query = "SELECT count(*) as count from logdb where lotno = '" . $log['lotno'] . "' and sku = '" . $log['sku'] . "'";
-        $count_lots = mysqli_fetch_array(mysqli_query($con, $query))['count'];
+       
+        $content .= '<td >' . $log['sku'] . '</td>
+        <td >' . $skudata['Name'] . '</td>
+        <td >' . $skudata['ThreadCount'] . '</td>
+        <td >' . $skudata['WeaveDesign'] . '</td>';
+        
         $constructionquery = "SELECT * from main where SKU = '" . $log['sku'] . "'";
         $construction_data = mysqli_query($con, $constructionquery);
         $construction = mysqli_fetch_array($construction_data);
-        // echo json_encode($construction);
         //Construdction = Warp_count Warp_Composition * Weft_count Weft _Composition\n EPI*PPI \n Ply-Width 
-        $finishedFabricConstruction = $construction['Finished_WarpCount'] . " " . $construction['Finished_WarpComposition'] . " * " . $construction['Finished_WeftCount'] . " " . $construction['Finished_WeftComposition'] . "<br>" . $construction['Finished_EPI'] . "*" . $construction['Finished_PPI'] . "<br>" . $construction['Finished_Ply'];
-        // echo "<script>console.log(Finished Fabric Construction: " . $finishedFabricConstruction . ")</script>";
+        $finishedFabricConstruction = $construction['Finished_WarpCount'] . " " . $construction['Finished_WarpComposition'] . " * " . $construction['Finished_WeftCount'] . " " . $construction['Finished_WeftComposition'] . "/<br>" . $construction['Finished_EPI'] . "*" . $construction['Finished_PPI'] . "/<br>" . $construction['Finished_Ply'];
+        
+        
+        $query = "SELECT * from datadb where lotno = '" . $log['lotno'] . "'";
+        $lot_data = mysqli_query($con, $query);
+        $lotdata = mysqli_fetch_array($lot_data);
+
+        
         $dyeingunitQuery = "SELECT dyeing_unit from datadb where lotno = '" . $log['lotno'] . "' and sku = '" . $log['sku'] . "'";
         $dyeingunit_data = mysqli_query($con, $dyeingunitQuery);
         $dyeingunit = mysqli_fetch_array($dyeingunit_data);
         $dyeingunit = $dyeingunit['dyeing_unit'];
-        $content .= 
-        '<td class="notop">' . $lotdata['finished_width'] . '</td>
-        <td class="notop">' . $finishedFabricConstruction . '</td>
-        <td class="notop">' . $dyeingunit . '</td>
-        <td class="notop">' . $log['lotno'] . '</td>';
-        $lotno_info = $log['lotno'];
-        $lot_info = false;
-        }
-        else {
-            $content .= '<td class="mergetd"></td>
-        <td class="mergetd"></td>
-                <td class="mergetd"></td>
-        <td class="mergetd"></td>';
-        }
 
-        if($rollno_info != $log['rollno']) {
-            $roll_info = true;
-        }
-        if($roll_info) {
-        $query = "SELECT count(*) as count from logdb where rollno = '" . $log['rollno'] . "' and lotno = '" . $log['lotno'] . "' and sku = '" . $log['sku'] . "'";
-        $count_rolls = mysqli_fetch_array(mysqli_query($con, $query))['count'];
+        $content .= 
+        '<td >' . $lotdata['finished_width'] . '</td>
+        <td >' . $finishedFabricConstruction . '</td>
+        <td >' . $dyeingunit . '</td>
+        <td >' . $log['lotno'] . '</td>';
+        
         $locationQuery = "SELECT location from datadb where lotno = '" . $log['lotno'] . "' and rollno = '" . $log['rollno'] . "' and sku = '" . $log['sku'] . "'";
         $location_data = mysqli_query($con, $locationQuery);
         $location = mysqli_fetch_array($location_data);
-        $content .= '<td class="notop">' . $location['location'] . '</td>
-        <td class="notop">' . $log['rollno'] . '</td>';
-        $rollno_info = $log['rollno'];
-        $roll_info = false;
-        }
-        else {
-            $content .= '<td class="mergetd"></td>
-                    <td class="mergetd"></td>';
-        }
+
+        $content .= '<td >' . $location['location'] . '</td>
+        <td >' . $log['rollno'] . '</td>';
+        
         $date_log = DateTime::createFromFormat('Y-m-d', $log['date'])->format('d-m-Y');
         $content .= '
         <td>' . $date_log . '</td>

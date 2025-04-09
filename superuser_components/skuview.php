@@ -2,7 +2,7 @@
         <h1>SKU List</h1>
         <div id="detailedskureportdiv">
         <button>
-            <a href="reports/detailedskureport.php">SKU Detailed List</a>
+            <a href="reports/detailedskureport.php">SKU Detailed List Report</a>
         </button>
         </div>
         <div id="skutablediv">

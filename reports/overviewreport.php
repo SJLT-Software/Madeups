@@ -76,19 +76,25 @@ h1{
     margin-top: 10px;
     margin-bottom: 10px;
 }
-
+thead {
+    display: table-header-group;
+}
 </style>
 <body>
 <div class = "heading">  <h1>Warehouse Overview as on '. $date .'</h1></div>
 <div id="tablediv">
 <table>
-    <tr><th> SKU </th>
-        <th> Name</th>
-        <th> TC </th>
-        <th> No. of lots</th>
-        <th> Total Rolls</th>
-        <th> Total Meters</th>
-    </tr>';
+    <thead>
+    <tr>
+    <th>SNO </th>
+    <th> SKU </th>
+    <th> Name</th>
+    <th> TC </th>
+    <th> No. of lots</th>
+    <th> Total Rolls</th>
+    <th> Total Meters</th>
+    </tr>
+    </thead>';
 while ($row = mysqli_fetch_array($rolls)) {
     $query = "SELECT count(*) from datadb where SKU = '" . $row['SKU'] . "'";
     $norolls = mysqli_query($con, $query);
@@ -102,8 +108,10 @@ while ($row = mysqli_fetch_array($rolls)) {
     while ($sum = mysqli_fetch_assoc($totalmeters)) {
         $grandtotalmeters += $sum['totalmeters'];
     }
+    static $sno = 1;
     $totalmeters = $grandtotalmeters;
     $content.= '<tr>
+    <td>' . $sno++ . '</td>
     <td>' . $row['SKU'] . '</td>
     <td>' . $row['Name'] . '</td>
     <td>' . $row['ThreadCount'] . '</td>

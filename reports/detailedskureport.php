@@ -78,12 +78,15 @@ h1{
     margin-top: 10px;
     margin-bottom: 10px;
 }
-
+thead {
+    display: table-header-group;
+}
 </style>
 <body>
-<div class = "heading">  <h1>Warehouse Overview as on '. $date .'</h1></div>
+<div class = "heading">  <h1>SKU Detailed List Report as on '. $date .'</h1></div>
 <div id="tablediv">
 <table>
+    <thead>
     <tr>
         <th>SNo</th>
         <th> SKU </th>
@@ -95,13 +98,15 @@ h1{
         <th> Greige Fabric Construction </th>
         <th> GSM </th>
         <th> Color </th>
-    </tr>';
+    </tr>
+    </thead>';
     while ($row = mysqli_fetch_array($rolls)) {
         //Warp_count Warp_Composition * Weft_count Weft _Composition\n EPI*PPI \n Ply-Width 
         $finishedFabricConstruction = $row['Finished_WarpCount'] . " " . $row['Finished_WarpComposition'] . " * " . $row['Finished_WeftCount'] . " " . $row['Finished_WeftComposition'] . "\n" . $row['Finished_EPI'] . "*" . $row['Finished_PPI'] . "\n" . $row['Finished_Ply'] . "-" . $row['Finished_Width'];
         $greigeFabricConstruction = $row['Greige_WarpCount'] . " " . $row['Greige_WarpComposition'] . " * " . $row['Greige_WeftCount'] . " " . $row['Greige_WeftComposition'] . "\n" . $row['Greige_EPI'] . "*" . $row['Greige_PPI'] . "\n" . $row['Greige_Ply'] . "-" . $row['Greige_Width'];
+        static $i = 1;
         $content.= '<tr>
-        <td><?php static $i = 1; echo $i++; ?></td>
+        <td>'. $i++ .'</td>
         <td>' . $row['SKU'] . '</td>
         <td>' . $row['Name'] . '</td>
         <td>' . $row['ThreadCount'] . '</td>

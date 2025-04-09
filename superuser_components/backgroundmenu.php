@@ -31,7 +31,10 @@
                     <a href="reports/overviewreport.php">Overview Report</a>
                 </button>
                 <button>
-                    <a href="reports/detailedreport.php">Detailed Report</a>
+                    <a href="reports/detailedreport.php">Warehouse Stock Report</a>
+                </button>
+                <button>
+                    <a href="reports/fabricratereport.php">Fabric Rate Report</a>
                 </button>
                 <button id="showskureport" onclick="skureportfunc()">SKU Report</button>
             </div>
