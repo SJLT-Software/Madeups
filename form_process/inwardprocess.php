@@ -50,21 +50,16 @@ error_reporting(E_ERROR);
 include("../connection/dbconnection.php");
 session_start();
 require_once '../vendor/autoload.php';
-include("../vendor/phpqrcode/qrlib.php");
+// include("../vendor/phpqrcode/qrlib.php");
+require_once 'generate_qr.php';
 if (!isset($_SESSION['userdets']) || empty($_SESSION['userdets'])) {
     session_destroy();
     header("Location: index.php");
     exit();
 }
 $username = $_SESSION['userdets'][1];
-// function downloadImage($url,$saveto) {
-//     $ch = curl_init($url);
-//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-//     $imageData = curl_exec($ch);
-//     curl_close($ch);
-//     file_put_contents($saveto, $imageData);
-// }
+use QRGenerator\QRGenerator;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lotno = $_POST['lotno'];
     $sku = $_POST['skuinward'];
@@ -109,57 +104,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // ---------------------------------------------------------
 
-            define('WIDTH_PIXELS', 280);
-            define('HEIGHT_PIXELS', 150);
-
-            $finalImage = imagecreatetruecolor(WIDTH_PIXELS, HEIGHT_PIXELS);
-            $white = imagecolorallocate($finalImage, 255, 255, 255);
-            imagefill($finalImage, 0, 0, $white);
-
+           
             $filename = $id . '_' . $sku . '_' . $lotno . '_' . $rollnumber . '.png';
-            $qrSize = min(WIDTH_PIXELS, HEIGHT_PIXELS) / 2; // Example size, adjust as needed
-            $qrCode = '../tempdump/' . $filename;
-            QRcode::png($id . '_' . $sku . '_' . $name .  '_' . $lotno . '_' . $rollnumber, $qrCode, QR_ECLEVEL_L, $qrSize / 25);
-
-            $qrImage = imagecreatefrompng($qrCode);
-            $padding = 20; // 20 pixels padding
-            $qrX = $padding; // Left padding
-            $qrY = (HEIGHT_PIXELS - imagesy($qrImage)) - $padding; // Positioning it a bit higher to leave space for text
-
-            imagecopy($finalImage, $qrImage, $qrX, $qrY, 0, 0, imagesx($qrImage), imagesy($qrImage));
-            $fontSize = 10; // Adjust font size as needed
-            $fontPath = '../fonts/Roboto-Bold.ttf';
-            $fontColor = imagecolorallocate($finalImage, 0, 0, 0);
-            $text = $sku . '_' . $name;
-            $bbox = imagettfbbox($fontSize, 0, $fontPath, $text);
-            $textWidth = $bbox[2] - $bbox[0];
-            $textX = 25;
-            $textY = $qrY + imagesy($qrImage) + 10; // Adjust Y position based on QR code height and desired padding
-            imagettftext($finalImage, $fontSize, 0, $textX, $textY, $fontColor, $fontPath, $text);
-    $rightPadding = 10; // Padding from the right edge of the QR code
-    $textXRight = imagesx($qrImage) + $qrX + $rightPadding;
-
-    $lineHeight = 25; // Height of each line of text
-    $textYStart = $qrY + 25; // Start at the same Y position as the QR code
-
-    $lines = [
-        "SKU: " . $sku,
-        "Lot no.: " . $lotno,
-        "Roll no.: " . $rollnumber,
-    ];
-    $fontSize = 11;
-    foreach ($lines as $index => $line) {
-        $textY = $textYStart + ($lineHeight * $index);
-        imagettftext($finalImage, $fontSize, 0, $textXRight, $textY, $fontColor, $fontPath, $line);
-    }
-            $filepath = '../tempdump/' . $filename;
-            imagepng($finalImage, $filepath);
-            imagedestroy($finalImage);
-            imagedestroy($qrImage);
-                        // ---------------------------------------------------------
-
-
-
+            $text = $sku . '_' . $name;        
+            $lines = [
+                "SKU: " . $sku,
+                "Lot no.: " . $lotno,
+                "Roll no.: " . $rollnumber,
+            ];
+            $filepath = QRGenerator::generateQR($filename, $text, $lines);
             $downloadLinks[] = $filepath;
 
 
