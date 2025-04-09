@@ -124,7 +124,7 @@ thead {
     $dompdf->loadHtml($content);
     $dompdf->setPaper('A4', 'landscape');
     $dompdf->render();
-    $dompdf->stream("Madeups SKU list as on ". $date .".pdf");
+    $dompdf->stream("Madeups SKU detailed list report as on ". $date .".pdf");
     
     header("Location: ../superuser.php");
     exit();  

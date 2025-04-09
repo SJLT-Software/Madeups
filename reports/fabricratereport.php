@@ -186,7 +186,7 @@ $(document).ready(function() {
 $dompdf->loadHtml($content);
 $dompdf->setPaper('A4', 'landscape');
 $dompdf->render();
-$dompdf->stream("Madeups warehouse report as on ". $date .".pdf");
+$dompdf->stream("Madeups fabric rate report as on ". $date .".pdf");
 header("Location: ../superuser.php");
 exit();
 ?>
