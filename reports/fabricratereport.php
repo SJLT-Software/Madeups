@@ -89,7 +89,7 @@ td.notop {
 
 </style>
 <body>
-<div class = "heading">  <h1>Warehouse Stock Report as on '. $date .'</h1></div>
+<div class = "heading">  <h1>Fabric Rate Report as on '. $date .'</h1></div>
 <div id="tablediv">
 <table border="1">
     <thead>

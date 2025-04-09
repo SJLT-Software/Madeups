@@ -102,8 +102,8 @@ thead {
     </thead>';
     while ($row = mysqli_fetch_array($rolls)) {
         //Warp_count Warp_Composition * Weft_count Weft _Composition\n EPI*PPI \n Ply-Width 
-        $finishedFabricConstruction = $row['Finished_WarpCount'] . " " . $row['Finished_WarpComposition'] . " * " . $row['Finished_WeftCount'] . " " . $row['Finished_WeftComposition'] . "\n" . $row['Finished_EPI'] . "*" . $row['Finished_PPI'] . "\n" . $row['Finished_Ply'] . "-" . $row['Finished_Width'];
-        $greigeFabricConstruction = $row['Greige_WarpCount'] . " " . $row['Greige_WarpComposition'] . " * " . $row['Greige_WeftCount'] . " " . $row['Greige_WeftComposition'] . "\n" . $row['Greige_EPI'] . "*" . $row['Greige_PPI'] . "\n" . $row['Greige_Ply'] . "-" . $row['Greige_Width'];
+        $finishedFabricConstruction = $row['Finished_WarpCount'] . " " . $row['Finished_WarpComposition'] . " * " . $row['Finished_WeftCount'] . " " . $row['Finished_WeftComposition'] . "/" . $row['Finished_EPI'] . "*" . $row['Finished_PPI'] . "/" . $row['Finished_Ply'] . "-" . $row['Finished_Width'];
+        $greigeFabricConstruction = $row['Greige_WarpCount'] . " " . $row['Greige_WarpComposition'] . " * " . $row['Greige_WeftCount'] . " " . $row['Greige_WeftComposition'] . "/" . $row['Greige_EPI'] . "*" . $row['Greige_PPI'] . "/" . $row['Greige_Ply'] . "-" . $row['Greige_Width'];
         static $i = 1;
         $content.= '<tr>
         <td>'. $i++ .'</td>
