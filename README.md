@@ -1,4 +1,11 @@
-SJLT Madeups development codebase<br />
-Import db from *.sql into phpmyadmin for tables<br />
-<br />
-Stack:
+## SJLT Madeups development codebase
+
+#### Stack:
+-Apache <br>
+-MySQL <br>
+-PHP <br>
+-Hosted Using XAMPP
+
+##
+
+##### Note:
